@@ -1,8 +1,8 @@
 import React from 'react'
 import LatestCollection from '../components/LatestCollection'
 import LatestBanner from '../components/LatestBanner'
-import Bestseller from '../components/BestSeller'
 import DeliveryPromise from '../components/DeliveryPromise'
+import Bestseller from "../components/Bestseller"
 
 const Home = () => {
   return (
