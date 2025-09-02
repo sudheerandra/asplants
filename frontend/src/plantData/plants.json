@@ -1,0 +1,79 @@
+ {
+  "Alovera": {
+    "description": "A hardy, low-maintenance plant known for air-purifying and skin-soothing benefits. Perfect for beginners and indoor spaces.",
+    "light": "Bright, indirect sunlight. Can tolerate direct sun.",
+    "watering": "Let soil dry completely between waterings.",
+    "soil": "Well-draining, sandy soil.",
+    "temperature": "15–30°C"
+  },
+  "Lucky Bamboo": {
+    "description": "A popular indoor plant symbolizing luck, wealth, and positive energy.",
+    "light": "Indirect light; avoid direct sunlight.",
+    "watering": "Keep roots covered with water or keep soil moist.",
+    "soil": "Well-draining potting mix if grown in soil.",
+    "temperature": "18–32°C"
+  },
+  "Snake": {
+    "description": "An extremely resilient plant that thrives on neglect. Great for air purification.",
+    "light": "Low to bright indirect light.",
+    "watering": "Water every 2–3 weeks, letting soil dry between waterings.",
+    "soil": "Sandy, well-draining soil.",
+    "temperature": "15–28°C"
+  },
+  "Lemon Grass": {
+    "description": "An aromatic grass often used in cooking and teas, also a natural mosquito repellent.",
+    "light": "Full sunlight.",
+    "watering": "Water regularly; keep soil evenly moist.",
+    "soil": "Rich, well-drained soil.",
+    "temperature": "20–30°C"
+  },
+  "Money Plant": {
+    "description": "A common indoor climber believed to bring prosperity and positive energy.",
+    "light": "Indirect sunlight, tolerates low light.",
+    "watering": "Water when topsoil feels dry.",
+    "soil": "Well-draining potting mix.",
+    "temperature": "15–30°C"
+  },
+  "Dracaena Marginata": {
+    "description": "Also called Dragon Tree, it’s a striking plant with long, slender leaves.",
+    "light": "Bright, indirect sunlight.",
+    "watering": "Allow the top inch of soil to dry between waterings.",
+    "soil": "Well-draining potting soil.",
+    "temperature": "18–30°C"
+  },
+  "Pachira Aquatica": {
+    "description": "Known as the Money Tree, often braided and believed to bring good fortune.",
+    "light": "Bright, indirect light.",
+    "watering": "Water when top 2–3 inches of soil are dry.",
+    "soil": "Moist but well-draining soil.",
+    "temperature": "16–28°C"
+  },
+  "Schefflera": {
+    "description": "Also called Umbrella Plant, has glossy green leaves that fan out.",
+    "light": "Bright, indirect light.",
+    "watering": "Water weekly, allow soil to dry slightly.",
+    "soil": "Rich, well-draining soil.",
+    "temperature": "18–27°C"
+  },
+  "Zamia plant": {
+    "description": "A low-maintenance indoor plant with thick, waxy leaves; drought tolerant.",
+    "light": "Low to bright indirect light.",
+    "watering": "Water every 2–3 weeks; allow soil to dry completely.",
+    "soil": "Well-draining sandy soil.",
+    "temperature": "15–26°C"
+  },
+  "Alocasia plant": {
+    "description": "Striking tropical plant with large, heart-shaped leaves.",
+    "light": "Bright, indirect sunlight.",
+    "watering": "Keep soil consistently moist but not soggy.",
+    "soil": "Rich, well-draining soil.",
+    "temperature": "18–28°C"
+  },
+  "Watermelon Peperomia": {
+    "description": "Compact houseplant with round, watermelon-patterned leaves.",
+    "light": "Bright, indirect light.",
+    "watering": "Water when topsoil is dry.",
+    "soil": "Peat-based, well-draining soil.",
+    "temperature": "18–26°C"
+  }
+}
