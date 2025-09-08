@@ -9,6 +9,7 @@ import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import contactRouter from "./routes/contactRoute.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import couponRoutes from "./routes/couponRoutes.js";
 
 
 // app config
@@ -29,6 +30,7 @@ app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/coupons", couponRoutes);
 
 
 

@@ -126,7 +126,14 @@ const placeOder = async (req, res) => {
 //PALACING ORDER USING RAZORPAY
 const placeOrderRazorpay = async (req, res) => {
   try {
-    const { userId, items, amount, address } = req.body;
+    const {
+      userId,
+      items,
+      amount,
+      address,
+      discount = 0,
+      delivery_fee = 0,
+    } = req.body;
 
     //CREATE ORDER DATA TO STORE DATABASE
     const orderData = {
@@ -134,6 +141,8 @@ const placeOrderRazorpay = async (req, res) => {
       items,
       amount,
       address,
+      discount,
+      delivery_fee,
       paymentMethod: "Razorpay",
       payment: false,
       date: Date.now(),
@@ -181,7 +190,7 @@ const verifyRazorpay = async (req, res) => {
       if (!order) {
         return res.json({ success: false, message: "Order not found!" });
       }
-     // console.log("ORDER... ", order);
+      // console.log("ORDER... ", order);
 
       // get user details
       const user = await userModel.findById(userId);
@@ -196,7 +205,7 @@ const verifyRazorpay = async (req, res) => {
       // use delivery email from order.address
       const customerEmail = order.address?.email;
       //console.log("Customer Email...", customerEmail);
-      
+
       // send confirmation mail
       await transporter.sendMail({
         from: `"AS Plants" <${process.env.SMTP_USER}>`,
@@ -213,7 +222,12 @@ const verifyRazorpay = async (req, res) => {
         )
         .join("")}
     </ul>
-    <p>Total Paid: ₹${order.amount}</p>
+    <p><b>Subtotal:</b> ₹${
+      order.amount + order.discount - order.delivery_fee
+    }</p>
+    <p><b>Shipping Fee:</b> ₹${order.delivery_fee}</p>
+    <p><b>Discount:</b> -₹${order.discount}</p>
+    <p><b>Total Paid:</b> ₹${order.amount}</p>
     <p>We’ll notify you when your order is on the way! 🌿</p>
   `,
       });
@@ -266,6 +280,23 @@ const updateOderStatus = async (req, res) => {
   }
 };
 
+// Search Orders
+const searchOrders = async (req, res) => {
+  const { orderId, userId } = req.query;
+  let query = {};
+  if (orderId) query._id = orderId;
+  if (userId) query.userId = userId;
+
+  const orders = await orderModel
+    .find(query)
+    .populate("userId", "name email phone address");
+
+  if (!orders.length)
+    return res.status(404).json({ message: "No orders found" });
+
+  res.json(orders);
+};
+
 export {
   placeOder,
   placeOrderRazorpay,
@@ -273,4 +304,5 @@ export {
   userOrders,
   allOrders,
   verifyRazorpay,
+  searchOrders,
 };

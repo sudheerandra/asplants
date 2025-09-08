@@ -5,11 +5,19 @@ import CartTotal from "../components/CartTotal";
 import { assests } from "../assets/assests";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import CouponBox from "../components/CouponBox";
 
 const Cart = () => {
-  const { products, cartItems, currency, updateQuantity, navigate, token } =
-    useContext(ShopContext);
+  const {
+    products,
+    cartItems,
+    currency,
+    updateQuantity,
+    navigate,
+    token,
+  } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
+  
 
   const handleScroll = () => {
     if (scrollTo) {
@@ -112,8 +120,10 @@ const Cart = () => {
               );
             })}
           </div>
-          <div className="flex justify-end my-20">
+
+          <div className="flex justify-end my-10">
             <div className="w-full sm:w-[450px]">
+            <CouponBox />
               <CartTotal />
               <div onClick={handleScroll} className="w-full text-end">
                 <button

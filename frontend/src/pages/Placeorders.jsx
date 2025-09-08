@@ -15,8 +15,10 @@ const PlaceOrder = () => {
     cartItems,
     setCartItems,
     products,
-    getCartAmount,
     delivery_fee,
+    getFinalAmount,
+    discount,
+    clearCoupon
   } = useContext(ShopContext);
   const [method, setMethod] = useState("cod");
   const [isPaying, setIsPaying] = useState(false);
@@ -55,7 +57,7 @@ const PlaceOrder = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: "Order Payment",
+      name: "AS Plants Order Payment",
       description: "Order Payment",
       order_id: order.id,
       receipt: order.receipt,
@@ -71,6 +73,7 @@ const PlaceOrder = () => {
             toast.success(data.message);
             navigate("/orders");
             setCartItems({});
+            clearCoupon();  // ✅ reset coupon
           }
         } catch (error) {
           console.log(error);
@@ -89,6 +92,7 @@ const PlaceOrder = () => {
     });
     rzp.open();
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -111,7 +115,9 @@ const PlaceOrder = () => {
       const orderData = {
         address: formData,
         items: orderItems,
-        amount: getCartAmount() + delivery_fee,
+        amount: getFinalAmount(),
+        discount,
+        delivery_fee
       };
 
       switch (method) {
@@ -124,6 +130,7 @@ const PlaceOrder = () => {
           );
           if (response.data.success) {
             setCartItems({});
+            clearCoupon();  // ✅ reset coupon
             navigate("/orders");
             toast.success(response.data.message);
           } else {
@@ -158,146 +165,159 @@ const PlaceOrder = () => {
 
   return (
     <form
-      onSubmit={submitHandler}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
-    >
-      {/* //////////// left side information //////////// */}
-      <div className="flex flex-col gap-4 w-full sm:max-w-[450px]">
-        <div className="text-xl sm:text-2xl my-3">
-          <Title text1={"DELIVERY"} text2={"INFORMATION"} />
-        </div>
-        {/*......... DELIVERY DATA BY USER ............... */}
-        <div className="flex gap-3">
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="First name"
-            onChange={onChageHandler}
-            name="firstName"
-            value={formData.firstName}
-            required
-          />
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="Last name"
-            onChange={onChageHandler}
-            name="lastName"
-            value={formData.lastName}
-            required
-          />
-        </div>
-        <input
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="email"
-          placeholder="Email address"
-          onChange={onChageHandler}
-          name="email"
-          value={formData.email}
-          required
-        />
-        <input
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="text"
-          placeholder="Street"
-          onChange={onChageHandler}
-          name="street"
-          value={formData.street}
-          required
-        />
-        <div className="flex gap-3">
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="City"
-            onChange={onChageHandler}
-            name="city"
-            value={formData.city}
-            required
-          />
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="State"
-            onChange={onChageHandler}
-            name="state"
-            value={formData.state}
-            required
-          />
-        </div>
-        <div className="flex gap-3">
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="number"
-            placeholder="PINCode"
-            onChange={onChageHandler}
-            name="pincode"
-            value={formData.pincode}
-            required
-          />
-          <input
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="Country"
-            onChange={onChageHandler}
-            name="country"
-            value={formData.country}
-            required
-          />
-        </div>
-        <input
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="number"
-          placeholder="Phone"
-          onChange={onChageHandler}
-          name="phone"
-          value={formData.phone}
-          required
-        />
-      </div>
-      {/* //////////// Right side Information ///////// */}
-      <div className="mt-8">
-        <div className="mt-8 min-w-80">
-          <CartTotal />
-        </div>
-        <div className="mt-12">
-          <Title text1={"PAYMENT"} text2={"METHOD"} />
-          {/* ....... payment method selection ......... */}
-          <div className="flex gap-3 flex-col lg:flex-row">
-                       <div className="flex items-center gap-3 border p-2 px-3 cursor-pointer">
-              <p
-                onClick={() => setMethod("razorpay")}
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razorpay" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-3 mx-4" src={assests.razorpay_icon} alt="" />
-            </div>
-            <div className="flex items-center gap-3 border p-2 px-3 cursor-pointer">
-              <p
-                onClick={() => setMethod("cod")}
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "cod" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
-                COSH ON DELEVERY
-              </p>
-            </div>
+  onSubmit={submitHandler}
+  className="flex flex-col lg:flex-row justify-between gap-8 pt-5 sm:pt-14 min-h-[80vh] border-t"
+>
+  {/* //////////// Left: Delivery Info //////////// */}
+  <div className="flex-1 max-w-full lg:max-w-[500px]">
+    <div className="text-xl sm:text-2xl my-3">
+      <Title text1={"DELIVERY"} text2={"INFORMATION"} />
+    </div>
+
+    {/* Delivery Form */}
+    <div className="flex gap-3">
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="First name"
+        onChange={onChageHandler}
+        name="firstName"
+        value={formData.firstName}
+        required
+      />
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="Last name"
+        onChange={onChageHandler}
+        name="lastName"
+        value={formData.lastName}
+        required
+      />
+    </div>
+
+    <input
+      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      type="email"
+      placeholder="Email address"
+      onChange={onChageHandler}
+      name="email"
+      value={formData.email}
+      required
+    />
+
+    <input
+      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      type="text"
+      placeholder="Street"
+      onChange={onChageHandler}
+      name="street"
+      value={formData.street}
+      required
+    />
+
+    <div className="flex gap-3 mt-3">
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="City"
+        onChange={onChageHandler}
+        name="city"
+        value={formData.city}
+        required
+      />
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="State"
+        onChange={onChageHandler}
+        name="state"
+        value={formData.state}
+        required
+      />
+    </div>
+
+    <div className="flex gap-3 mt-3">
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="number"
+        placeholder="PINCode"
+        onChange={onChageHandler}
+        name="pincode"
+        value={formData.pincode}
+        required
+      />
+      <input
+        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="Country"
+        onChange={onChageHandler}
+        name="country"
+        value={formData.country}
+        required
+      />
+    </div>
+
+    <input
+      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      type="number"
+      placeholder="Phone"
+      onChange={onChageHandler}
+      name="phone"
+      value={formData.phone}
+      required
+    />
+  </div>
+
+  {/* //////////// Right: Cart + Payment //////////// */}
+  <div className="flex-1 max-w-full lg:max-w-[400px]">
+    <div className="sticky top-24">
+      <CartTotal />
+
+      <div className="mt-12">
+        <Title text1={"PAYMENT"} text2={"METHOD"} />
+
+        {/* Payment Method Selection */}
+        <div className="flex gap-3 flex-col lg:flex-row">
+          <div className="flex items-center gap-3 border p-2 px-3 cursor-pointer rounded-md">
+            <p
+              onClick={() => setMethod("razorpay")}
+              className={`min-w-3.5 h-3.5 border rounded-full ${
+                method === "razorpay" ? "bg-green-400" : ""
+              }`}
+            ></p>
+            <img className="h-3 mx-4" src={assests.razorpay_icon} alt="" />
           </div>
-          <div onClick={handleScroll} className="w-full text-end mt-8">
-            <button
-              // onClick={() => navigate("/orders")}
-              type="submit"
-              className="bg-green-600 text-white rounded-full text-sm my-8 px-8 py-3"
-            >
-              PROCEED TO PAY
-            </button>
-            {loading && <Loader message="Processing your payment... Please wait 🌱" />}
+
+          <div className="flex items-center gap-3 border p-2 px-3 cursor-pointer rounded-md">
+            <p
+              onClick={() => setMethod("cod")}
+              className={`min-w-3.5 h-3.5 border rounded-full ${
+                method === "cod" ? "bg-green-400" : ""
+              }`}
+            ></p>
+            <p className="text-gray-500 text-sm font-medium mx-4">
+              CASH ON DELIVERY
+            </p>
           </div>
         </div>
+
+        {/* Proceed Button */}
+        <div onClick={handleScroll} className="w-full text-end mt-8">
+          <button
+            type="submit"
+            className="bg-green-600 text-white rounded-full text-sm my-8 px-8 py-3"
+          >
+            PROCEED TO PAY
+          </button>
+          {loading && (
+            <Loader message="Processing your payment... Please wait 🌱" />
+          )}
+        </div>
       </div>
-    </form>
+    </div>
+  </div>
+</form>
   );
 };
 

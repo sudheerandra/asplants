@@ -113,6 +113,7 @@ const Orders = (props) => {
                 <p>Method: {order.paymentMethod}</p>
                 <p>Payment: {order.payment ? "Done" : "Pending"}</p>
                 <p>Date: {new Date(order.date).toDateString()}</p>
+                <p>OrderId : {order._id} </p>
               </div>
             </div>
             <div>

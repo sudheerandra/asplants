@@ -8,8 +8,8 @@ import Sidebar from "./components/sidebar";
 import List from "./pages/list";
 import Orders from "./pages/orders";
 import Add from "./pages/add";
-
-
+import CouponsPage from "./pages/coupons";
+import SearchOrders from "./components/SearchOrders";
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -48,6 +48,8 @@ const App = () => {
                 />
                 <Route path="/list" element={token ? <List token={token} /> : <Navigate to="/" />} />
                 <Route path="/orders" element={<Orders token={token} currency={currency}/>} />
+                <Route path="/coupons" element={<CouponsPage token={token} />} />
+                <Route path="/search" element={<SearchOrders token={token} />} />
               </Routes>
             </div>
           </div>

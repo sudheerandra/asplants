@@ -26,6 +26,9 @@ const Orders = () => {
             item["payment"] = order.payment;
             item["paymentMethod"] = order.paymentMethod;
             item["date"] = order.date;
+            item["orderAmount"] = order.amount;
+            item["discount"] = order.discount || 0;
+            item["delivery_fee"] = order.delivery_fee || 0;
             allOrders.push(item);
           });
         });
@@ -42,7 +45,9 @@ const Orders = () => {
   //console.log("ALL ORDERS...", orderData);
 
   useEffect(() => {
-    getOrdersData();
+    if (token) {
+      getOrdersData();
+    }
   }, [token]);
 
   return (
@@ -72,7 +77,7 @@ const Orders = () => {
                 <div className="flex flex-wrap gap-4 text-sm text-gray-700">
                   <p>
                     {currency}
-                    {item.price}
+                    {item.orderAmount}
                   </p>
                   <p>Quantity: {item.quantity}</p>
                 </div>
