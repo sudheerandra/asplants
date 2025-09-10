@@ -53,7 +53,7 @@ const Cart = () => {
   const isCartEmpty = Object.values(cartItems).every((qty) => qty === 0);
 
   return (
-    <div className="border-t pt-14">
+    <div className="border-t pt-10">
       <div className="text-2xl mb-3">
         <Title text1={"YOUR"} text2={"CART"} />
       </div>
@@ -128,7 +128,7 @@ const Cart = () => {
               <div onClick={handleScroll} className="w-full text-end">
                 <button
                   onClick={handleCheckout}
-                  className="bg-green-600 text-white px-4 py-2 mt-3 rounded-full shadow-md 
+                  className="bg-green-600 text-white px-4 py-2 mt-5 rounded-full shadow-md 
              hover:bg-green-700 active:bg-green-800 transition duration-200"
                 >
                   PROCEED TO CHECKOUT

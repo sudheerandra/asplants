@@ -121,17 +121,17 @@ const forgotPassword = async (req, res) => {
   from: `"Support Team" <${process.env.EMAIL}>`,
   to: user.email,
   subject: "Password Reset Request",
-  text: `Hello ${user.name || "User"},\n\nYou requested a password reset. Click the link below to reset your password:\n\nhttp://localhost:5173/reset-password/${user._id}/${token}\n\nIf you did not request this, please ignore this email.`,
+  text: `Hello ${user.name || "User"},\n\nYou requested a password reset. Click the link below to reset your password:\n\nhttp://asplants-frontend.vercel.app/reset-password/${user._id}/${token}\n\nIf you did not request this, please ignore this email.`,
   html: `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <h2>Hello ${user.name || "User"},</h2>
       <p>You requested a password reset. Please click the button below to reset your password:</p>
-      <a href="http://localhost:5173/reset-password/${user._id}/${token}" 
+      <a href="http://asplants-frontend.vercel.app/reset-password/${user._id}/${token}" 
          style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #f97316; color: white; text-decoration: none; border-radius: 5px;">
          Reset Password
       </a>
       <p style="margin-top: 20px;">If the button doesn’t work, copy and paste this link in your browser:</p>
-      <p><a href="http://localhost:5173/reset-password/${user._id}/${token}">http://localhost:5173/reset-password/${user._id}/${token}</a></p>
+      <p><a href="http://asplants-frontend.vercel.app/reset-password/${user._id}/${token}">http://asplants-frontend.vercel.app/reset-password/${user._id}/${token}</a></p>
       <br />
       <p>If you did not request this, you can safely ignore this email.</p>
       <p>— Support Team</p>

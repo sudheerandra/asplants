@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 
 const ReviewList = ({ productId, newReview }) => {
-  const { backendUrl } = useContext(ShopContext);
-  const [reviews, setReviews] = useState([]);
+  const { backendUrl, reviews, setReviews } = useContext(ShopContext);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

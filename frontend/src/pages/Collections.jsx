@@ -72,16 +72,16 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap12 sm:gap-10 pt-10 ">
+    <div className="flex flex-col sm:flex-row gap12 sm:gap-10 pt-5 ">
       {/* Filters Options*/}
       <div className="min-w-60">
         <p
           onClick={() => setShowFilters(!showFilters)}
-          className="my-2 text-xl flex items-center cursor-pointer gap-2"
+          className="my-2 text-xl flex items-center cursor-pointer gap-2 text-green-700 font-semibold hover:text-green-600 transition-colors duration-300"
         >
           FILTERS
           <img
-            className={`h-3 sm:hidden ${showFilters ? "rotate-90" : ""}`}
+            className={`h-3 sm:hidden transform transition-transform duration-300 ${showFilters ? "rotate-90" : ""}`}
             src={assests.dropdown_icon}
             alt=""
           />
@@ -89,12 +89,12 @@ const Collection = () => {
 
         {/* Category Filters */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 ${
+          className={`border border-green-200 rounded-lg shadow-sm bg-green-50 pl-5 py-4 mt-6 transition-all duration-500 ease-in-out ${
             showFilters ? "" : "hidden"
           } sm:block`}
         >
           <p className="mb-3">CATEGORY</p>
-          <div className="flex flex-col gap-2 font-light text-sm text-gray-700">
+          <div className="flex flex-col gap-2 font-semibold text-sm text-green-700">
             <p className="flex gap-2">
               <input
                 className="w-3"
@@ -118,16 +118,16 @@ const Collection = () => {
       </div>
       {/* Right side */}
       <div className="flex-1">
-        <div className="flex justify-between text-base sm:text-2xl mb-4">
+        <div className="flex justify-between text-base sm:text-2xl mb-4 mt-2">
           <Title text1={"ALL"} text2={"COLLECTIONS"} />
           {/* product sort */}
           <select
             onChange={(e) => setSortType(e.target.value)}
-            className="border-2 border-gray-600 text-base"
+            className="border-2 border-green-600 rounded-lg text-base mt-3"
           >
-            <option value="relavent">sort by: relavent</option>
-            <option value="low">sort by: low - high</option>
-            <option value="high">sort by: high - low</option>
+            <option value="relavent" className="bg-green-50" >sort by: relavent</option>
+            <option value="low" className="bg-green-50">sort by: low - high</option>
+            <option value="high" className="bg-green-50">sort by: high - low</option>
           </select>
         </div>
         {/* Map Products */}
@@ -139,6 +139,8 @@ const Collection = () => {
               id={item._id}
               image={item.image}
               price={item.price}
+              reviewCount={item.reviewCount}
+            avgRating={item.avgRating}
             />
           ))}
         </div>

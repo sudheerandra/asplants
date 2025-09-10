@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext.jsx";
+import { assests } from "../assets/assests";
 import Title from "./Title";
 import ProductItems from "./ProductItems.jsx";
 
@@ -9,7 +10,7 @@ const Bestseller = () => {
 
   useEffect(() => {
     const bestproduct = products.filter((item) => item.bestseller);
-    setBestSeller(bestproduct.slice(0, 5));
+    setBestSeller(bestproduct.slice(0, 15));
   }, [products]);
 
   const handleScroll = () => {
@@ -35,9 +36,11 @@ const Bestseller = () => {
             name={item.name}
             price={item.price}
             image={item.image}
+            reviewCount={item.reviewCount}
+            avgRating={item.avgRating}
           />
         ))}
-      </div>
+             </div>
     </div>
   );
 };

@@ -61,7 +61,7 @@ const CartTotal = () => {
         <hr />
 
         {/* Shipping Fee */}
-        {shipping > 0 && (
+        {shipping === 0 && (
           <div className="flex justify-between">
             <p className="text-gray-600 font-medium">Shipping Fee</p>
             <p className="font-semibold text-orange-700">

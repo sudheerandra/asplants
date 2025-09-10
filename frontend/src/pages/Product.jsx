@@ -1,24 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { useParams } from "react-router-dom";
 import RelatedProducts from "../components/RelatedProducts";
 import { assests } from "../assets/assests";
 import ReviewForm from "../components/ReviewForm";
 import ReviewList from "../components/ReviewList";
-import axios from "axios";
 import PlantCareGuide from "../components/PlantCartGuide";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 
 const Product = () => {
-  const { products, currency, addToCart, backendUrl } = useContext(ShopContext);
+  const { products, currency, addToCart, avgRating,reviewCount, setReviewCount, setReviews, setAvgRating, backendUrl} = useContext(ShopContext);
   const { productId } = useParams();
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
   const [newReview, setNewReview] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [avgRating, setAvgRating] = useState(0);
-  const [reviewCount, setReviewCount] = useState(0);
 
   useEffect(() => {
     const fetchReviews = async () => {

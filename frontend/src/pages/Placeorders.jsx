@@ -20,6 +20,7 @@ const PlaceOrder = () => {
     discount,
     clearCoupon
   } = useContext(ShopContext);
+  
   const [method, setMethod] = useState("cod");
   const [isPaying, setIsPaying] = useState(false);
   const [loading, setLoading] = useState(false); // new state
@@ -166,7 +167,7 @@ const PlaceOrder = () => {
   return (
     <form
   onSubmit={submitHandler}
-  className="flex flex-col lg:flex-row justify-between gap-8 pt-5 sm:pt-14 min-h-[80vh] border-t"
+  className="flex flex-col lg:flex-row justify-between gap-8  sm:pt-14 min-h-[80vh] border-t"
 >
   {/* //////////// Left: Delivery Info //////////// */}
   <div className="flex-1 max-w-full lg:max-w-[500px]">
@@ -177,7 +178,7 @@ const PlaceOrder = () => {
     {/* Delivery Form */}
     <div className="flex gap-3">
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="text"
         placeholder="First name"
         onChange={onChageHandler}
@@ -186,7 +187,7 @@ const PlaceOrder = () => {
         required
       />
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="text"
         placeholder="Last name"
         onChange={onChageHandler}
@@ -197,7 +198,7 @@ const PlaceOrder = () => {
     </div>
 
     <input
-      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      className="border border-green-300 rounded py-1.5 px-3.5 w-full mt-3"
       type="email"
       placeholder="Email address"
       onChange={onChageHandler}
@@ -207,7 +208,7 @@ const PlaceOrder = () => {
     />
 
     <input
-      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      className="border border-green-300 rounded py-1.5 px-3.5 w-full mt-3"
       type="text"
       placeholder="Street"
       onChange={onChageHandler}
@@ -218,7 +219,7 @@ const PlaceOrder = () => {
 
     <div className="flex gap-3 mt-3">
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="text"
         placeholder="City"
         onChange={onChageHandler}
@@ -227,7 +228,7 @@ const PlaceOrder = () => {
         required
       />
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="text"
         placeholder="State"
         onChange={onChageHandler}
@@ -239,7 +240,7 @@ const PlaceOrder = () => {
 
     <div className="flex gap-3 mt-3">
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="number"
         placeholder="PINCode"
         onChange={onChageHandler}
@@ -248,7 +249,7 @@ const PlaceOrder = () => {
         required
       />
       <input
-        className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+        className="border border-green-300 rounded py-1.5 px-3.5 w-full"
         type="text"
         placeholder="Country"
         onChange={onChageHandler}
@@ -259,7 +260,7 @@ const PlaceOrder = () => {
     </div>
 
     <input
-      className="border border-gray-300 rounded py-1.5 px-3.5 w-full mt-3"
+      className="border border-green-300 rounded py-1.5 px-3.5 w-full mt-3"
       type="number"
       placeholder="Phone"
       onChange={onChageHandler}
@@ -279,7 +280,7 @@ const PlaceOrder = () => {
 
         {/* Payment Method Selection */}
         <div className="flex gap-3 flex-col lg:flex-row">
-          <div className="flex items-center gap-3 border p-2 px-3 cursor-pointer rounded-md">
+          <div className="flex items-center gap-3 border border-green-600 p-2 px-3 cursor-pointer rounded-md">
             <p
               onClick={() => setMethod("razorpay")}
               className={`min-w-3.5 h-3.5 border rounded-full ${
@@ -306,7 +307,7 @@ const PlaceOrder = () => {
         <div onClick={handleScroll} className="w-full text-end mt-8">
           <button
             type="submit"
-            className="bg-green-600 text-white rounded-full text-sm my-8 px-8 py-3"
+            className="bg-green-600 text-white rounded-full text-sm  px-8 py-3"
           >
             PROCEED TO PAY
           </button>

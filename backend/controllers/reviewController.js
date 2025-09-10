@@ -32,7 +32,7 @@ export const getReviews = async (req, res) => {
     const reviews = await Review.find({ productId }).sort({ createdAt: -1 });
 
     const stats = await Review.aggregate([
-      { $match: { productId } }, // ✅ match string directly
+       { $match: { productId: String(productId) } }, // ✅ match string directly
       {
         $group: {
           _id: "$productId",
@@ -52,3 +52,29 @@ export const getReviews = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// ✅ Get all review stats for all products
+export const getAllReviewStats = async (req, res) => {
+  try {
+    const stats = await Review.aggregate([
+      {
+        $group: {
+          _id: "$productId",
+          avgRating: { $avg: "$rating" },
+          reviewCount: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.json(stats); 
+    // Example response:
+    // [
+    //   { _id: "productId1", avgRating: 4.5, reviewCount: 12 },
+    //   { _id: "productId2", avgRating: 3.8, reviewCount: 5 }
+    // ]
+  } catch (error) {
+    console.error("Error in getAllReviewStats:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+

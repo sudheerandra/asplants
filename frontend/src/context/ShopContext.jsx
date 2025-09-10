@@ -9,33 +9,44 @@ export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
   //const currency = "$";
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const currency = "₹";
-  const delivery_fee = 10;
+  const delivery_fee = 0;
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [email, setEmail] = useState("");
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [token, setToken] = useState("");
   const [loadingToken, setLoadingToken] = useState(true);
+
+  const [reviews, setReviews] = useState([]);
+  const [avgRating, setAvgRating] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
 
   const [coupons, setCoupons] = useState([]);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [discount, setDiscount] = useState(0);
 
-
   // ------------ GET ALL PRODUCTS FROM BACKEND URL ------------------
   const getProducts = async () => {
     try {
-      const response = await axios.get(backendUrl + "/api/product/list");
-      //console.log(response.data);
-      if (response.data.success) {
-        setProducts(response.data.products);
-      } else {
-        toast.error(response.data.message);
-      }
+      // ✅ Fetch products (now with review stats)
+      const response = await axios.get(backendUrl + "/api/product/list", {
+        headers: { token },
+      });
+      const products = response.data.products;
+
+      // ✅ Format ratings if needed
+      const productsWithStats = products.map((product) => ({
+        ...product,
+        avgRating: product.avgRating ? Number(product.avgRating.toFixed(1)) : 0,
+        reviewCount: product.totalReviews || 0,
+      }));
+
+      setProducts(productsWithStats);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching products:", error);
       toast.error(error.message);
     }
   };
@@ -60,6 +71,7 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // ---------------- GET ALL COUPONS FROM BACKEND URL ------------------
   const fetchCoupons = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/coupons`);
@@ -70,6 +82,7 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // --------------- APPLY COUPON TO FRONTEND --------------
   const applyCoupon = async (code) => {
     try {
       const response = await axios.post(
@@ -96,11 +109,13 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // -------------- CLEAR COUPON ---------------------
   const clearCoupon = () => {
-  setDiscount(0);
-  setAppliedCoupon(null);
-};
+    setDiscount(0);
+    setAppliedCoupon(null);
+  };
 
+  //------------- GET PRODUCTS AND COUPONS ------------------
   useEffect(() => {
     getProducts();
     fetchCoupons();
@@ -123,6 +138,7 @@ const ShopContextProvider = (props) => {
   const addToCart = async (itemId) => {
     if (!token) {
       toast.error("Please Loign");
+      return;
     }
     setCartItems((prev) => {
       const quantity = prev[itemId] || 0;
@@ -181,6 +197,7 @@ const ShopContextProvider = (props) => {
     return totalAmount;
   };
 
+  // -------------- FINAL AMOUNT -------------------------
   const getFinalAmount = () => {
     const subtotal = getCartAmount();
     const shipping = subtotal === 0 ? 0 : delivery_fee;
@@ -233,7 +250,7 @@ const ShopContextProvider = (props) => {
     }
   }, [cartItems]);
 
-  // Remove coupon
+  // ------------- REMOVED COUPONS -------------------
   const removeCoupon = () => {
     setAppliedCoupon("");
     setDiscount(0);
@@ -266,7 +283,13 @@ const ShopContextProvider = (props) => {
     applyCoupon,
     getFinalAmount,
     removeCoupon,
-    clearCoupon
+    clearCoupon,
+    reviews,
+    setReviews,
+    avgRating,
+    setAvgRating,
+    reviewCount,
+    setReviewCount,
   };
 
   return (

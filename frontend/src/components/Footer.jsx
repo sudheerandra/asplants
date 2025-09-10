@@ -12,7 +12,7 @@ const Footer = () => {
   }, [pathname]);
 
   return (
-    <div className="bg-green-50 text-gray-700">
+    <div className="bg-green-50 text-gray-700 mt-4">
       {/* Main Footer Section */}
       <div className="max-w-7xl mx-auto flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-8 px-6 py-12">
         {/* Logo & About */}

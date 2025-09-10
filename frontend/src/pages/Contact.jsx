@@ -66,19 +66,19 @@ const handleSubmit = async (e) => {
             <input
               type="text"
               placeholder="Your Name"
-              className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="border border-green-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
             <input
               type="email"
               placeholder="Your Email"
-              className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="border border-green-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
             <textarea
               rows="4"
               placeholder="Your Message"
-              className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="border border-green-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             ></textarea>
             <button

@@ -13,7 +13,7 @@ const CouponBox = () => {
   };
 
   return (
-    <div className="mt-6 my-10 p-4 bg-white shadow-md rounded-lg border border-gray-200">
+    <div className="mt-2 my-10 p-4 bg-white shadow-md rounded-lg border border-gray-200">
   <h3 className="font-semibold text-gray-800 mb-2">Have a Coupon?</h3>
 
   {appliedCoupon ? (
@@ -36,7 +36,7 @@ const CouponBox = () => {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         placeholder="Enter coupon code"
-        className="flex-1 border rounded-lg px-3 py-2 text-sm sm:text-base focus:ring focus:ring-green-300"
+        className="flex-1 border border-green-600 rounded-lg px-3 py-2 text-sm sm:text-base focus:ring focus:ring-green-300"
       />
       <button
         onClick={handleApply}

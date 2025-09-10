@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { json } from "express";
 import productModel from "../models/productModel.js";
+import reviewModel from "../models/ReviewModel.js";
 
 // Fuction for add product
 const addProduct = async (req, res) => {
@@ -62,16 +63,44 @@ const removeProduct = async (req, res) => {
   }
 };
 
-// Fuction for list products
+
+
+// Function to list products with review stats
 const listProducts = async (req, res) => {
   try {
+    // 1️⃣ Fetch all products
     const products = await productModel.find({});
-    res.json({ success: true, products });
+
+    // 2️⃣ Aggregate review stats for each product
+    const reviewStats = await reviewModel.aggregate([
+      {
+        $group: {
+          _id: "$productId",
+          totalReviews: { $sum: 1 },
+          avgRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    // 3️⃣ Map stats to products
+    const productsWithStats = products.map((product) => {
+      const stats = reviewStats.find(
+        (r) => r._id.toString() === product._id.toString()
+      );
+      return {
+        ...product._doc, // preserve original product fields
+        totalReviews: stats ? stats.totalReviews : 0,
+        avgRating: stats ? stats.avgRating : 0,
+      };
+    });
+
+    res.status(200).json({ success: true, products: productsWithStats });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // Fuction for single product info
 const singleProduct = async (req, res) => {
