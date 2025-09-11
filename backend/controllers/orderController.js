@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 
 //GLOBAL VARIABLE
 const currency = "inr";
-const deliveryCharge = 10;
+const deliveryCharge = 0;
 
 //GATE WAY INITILIZATIONS - CREATE INSTANCE
 //const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -19,7 +19,7 @@ const razorpay = new Razorpay({
 //PALACING ORDER USING COD
 const placeOder = async (req, res) => {
   try {
-    const { userId, items, amount, address } = req.body;
+    const { userId, items, amount, address, discount = 0 } = req.body;
 
     //CREATE ORDER DATA TO STORE DATABASE
     const orderData = {
@@ -37,6 +37,41 @@ const placeOder = async (req, res) => {
 
     //CLEAR CART DATA AFTER PLACED ORDER
     await userModel.findByIdAndUpdate(userId, { cartdata: {} });
+
+    // ✅ SEND EMAIL TO CUSTOMER
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const customerEmail = address?.email;
+
+    await transporter.sendMail({
+      from: `"AS Plants" <${process.env.SMTP_USER}>`,
+      to: customerEmail,
+      subject: "AS Plants Order Confirmation 🌱",
+      html: `
+    <h2>Thank you for your order, ${address.firstName}!</h2>
+    <p>Your order has been placed successfully with <b>Cash on Delivery</b>.</p>
+    <p><b>Order ID:</b> ${newOrder._id}</p>
+    <ul>
+      ${items
+        .map(
+          (item) =>
+            `<li>${item.name} - Qty: ${item.quantity} - ₹${item.price}</li>`
+        )
+        .join("")}
+    </ul>
+    <p><b>Subtotal:</b> ₹${amount + discount - deliveryCharge}</p>
+    <p><b>Shipping Fee:</b> ₹${deliveryCharge}</p>
+    <p><b>Discount:</b> -₹${discount}</p>
+    <p><b>Total Payable:</b> ₹${amount}</p>
+    <p>We’ll notify you when your order is on the way! 🌿</p>
+  `,
+    });
 
     await res.json({ success: true, message: "ORDER PLACED!" });
   } catch (error) {
@@ -195,6 +230,7 @@ const verifyRazorpay = async (req, res) => {
       // get user details
       const user = await userModel.findById(userId);
       //console.log("📧 Sent to:", user.email);
+
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -214,6 +250,7 @@ const verifyRazorpay = async (req, res) => {
         html: `
     <h2>Thank you for your order, ${user.name}!</h2>
     <p>Your payment was successful and your order is being processed.</p>
+    <p><b>Order ID:</b> ${order._id}</p>
     <ul>
       ${order.items
         .map(
@@ -286,7 +323,6 @@ const searchOrders = async (req, res) => {
   let query = {};
   if (orderId) query._id = orderId;
   if (userId) query.userId = userId;
-
   const orders = await orderModel
     .find(query)
     .populate("userId", "name email phone address");
@@ -297,6 +333,50 @@ const searchOrders = async (req, res) => {
   res.json(orders);
 };
 
+// getOrderSummaryByDate
+const getOrderSummaryByDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) {
+      return res.status(400).json({ message: "Date is required" });
+    }
+
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+
+    const orders = await orderModel.find({ date: { $gte: start, $lte: end } });
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found for this date" });
+    }
+
+    // 🔹 Build product-wise summary
+    const summary = {};
+    orders.forEach((order) => {
+      order.items.forEach((item) => {
+        if (!summary[item.name]) {
+          summary[item.name] = {
+            quantity: 0,
+            total: 0,
+          };
+        }
+        summary[item.name].quantity += item.quantity;
+        summary[item.name].total += item.price * item.quantity;
+      });
+    });
+
+    // ✅ Return  summary
+    res.json({ date, summary });
+  } catch (err) {
+    console.error("Error fetching summary:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching summary", error: err.message });
+  }
+};
+
 export {
   placeOder,
   placeOrderRazorpay,
@@ -305,4 +385,5 @@ export {
   allOrders,
   verifyRazorpay,
   searchOrders,
+  getOrderSummaryByDate,
 };
