@@ -15,13 +15,26 @@
   display: none;
 }
 
+.animate-slow-pan {
+  animation: slow-pan 15s ease-in-out infinite;
+  background-size: 160%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .animate-slow-pan {
+    animation-duration: 4s; /* faster */
+  }
+
+  @keyframes slow-pan {
+    0% { background-position: center; }
+    50% { background-position: 20% 20%; } /* moves a bit more */
+    100% { background-position: center; }
+  }
+}
+
 @keyframes slow-pan {
   0% { background-position: center; }
   50% { background-position: top; }
   100% { background-position: center; }
-}
-
-.animate-slow-pan {
-  animation: slow-pan 25s ease-in-out infinite;
-  background-size: 120%; /* ensures movement visible */
 }

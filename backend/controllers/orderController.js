@@ -69,7 +69,14 @@ const placeOder = async (req, res) => {
     <p><b>Shipping Fee:</b> ₹${deliveryCharge}</p>
     <p><b>Discount:</b> -₹${discount}</p>
     <p><b>Total Payable:</b> ₹${amount}</p>
-    <p>We’ll notify you when your order is on the way! 🌿</p>
+    <p>We’ll notify you when your order is on the way! 🌿 <br><br>
+  <span style="color:#228B22; font-style:italic; font-size:16px;">
+    With love &amp; greenery,
+  </span> <br>
+  <span style="color:#2E8B57; font-family:'Brush Script MT', cursive; font-size:18px;">
+    AS Plants Team
+  </span>
+</p>
   `,
     });
 
@@ -225,12 +232,8 @@ const verifyRazorpay = async (req, res) => {
       if (!order) {
         return res.json({ success: false, message: "Order not found!" });
       }
-      // console.log("ORDER... ", order);
-
       // get user details
       const user = await userModel.findById(userId);
-      //console.log("📧 Sent to:", user.email);
-
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -240,7 +243,6 @@ const verifyRazorpay = async (req, res) => {
       });
       // use delivery email from order.address
       const customerEmail = order.address?.email;
-      //console.log("Customer Email...", customerEmail);
 
       // send confirmation mail
       await transporter.sendMail({
@@ -265,7 +267,15 @@ const verifyRazorpay = async (req, res) => {
     <p><b>Shipping Fee:</b> ₹${order.delivery_fee}</p>
     <p><b>Discount:</b> -₹${order.discount}</p>
     <p><b>Total Paid:</b> ₹${order.amount}</p>
-    <p>We’ll notify you when your order is on the way! 🌿</p>
+   <p>
+  We’ll notify you when your order is on the way! 🌿 <br><br>
+  <span style="color:#228B22; font-style:italic; font-size:16px;">
+    With love &amp; greenery,
+  </span> <br>
+  <span style="color:#2E8B57; font-family:'Brush Script MT', cursive; font-size:18px;">
+    AS Plants Team
+  </span>
+</p>
   `,
       });
 

@@ -3,8 +3,6 @@ import nodemailer from "nodemailer";
 const contact = async (req, res) => {
   try {
     const { name, email, message } = req.body;
-    console.log("📨 Contact Request:", { name, email, message });
-
     if (!name || !email || !message) {
       return res
         .status(400)

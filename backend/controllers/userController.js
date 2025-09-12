@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import nodemailer from "nodemailer";
 
-const clientUrl = process.env.CLIENT_PROD;
 
 // Create Token
 const createToken = (id) => {
@@ -65,14 +64,8 @@ const loginUser = async (req, res) => {
       return res.json({ success: false, message: "user doesn't exists" });
     }
 
-    console.log("🔑 Login attempt for:", email);
-    console.log("👉 Entered plain password:", password);
-    console.log("👉 Stored hash in DB:", user.password);
-
     // Checking Password
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("✅ Password match result:", isMatch);
-
     if (isMatch) {
       const token = createToken(user._id);
       res.json({ success: true, token });
@@ -125,9 +118,14 @@ const forgotPassword = async (req, res) => {
       },
     });
 
-    const clientUrl = process.env.CLIENT_PROD; // make sure this exists
-    const resetLink = `${clientUrl}/reset-password/${user._id}/${token}`;
+    // Pick frontend URL based on environment
+    const clientUrl =
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_PROD
+        : process.env.CLIENT_URL;
 
+    const resetLink = `${clientUrl}/reset-password/${user._id}/${token}`;
+  
     let mailOptions = {
       from: `"Support Team" <${process.env.EMAIL}>`,
       to: user.email,
@@ -169,9 +167,6 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
-  console.log("🔄 Reset password request for user:", id);
-  console.log("👉 New plain password received:", password);
-
   try {
     // Verify the token (signed when forgot-password was triggered)
     const payload = jwt.verify(token, process.env.JWT_TOKEN);
@@ -188,7 +183,7 @@ const resetPassword = async (req, res) => {
     // Hash new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log("STORED PASSWORD..", hashedPassword);
+
     // Update user password
     user.password = hashedPassword;
     await user.save();

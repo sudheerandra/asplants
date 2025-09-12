@@ -117,8 +117,8 @@ const ShopContextProvider = (props) => {
 
   //------------- GET PRODUCTS AND COUPONS ------------------
   useEffect(() => {
-    getProducts();
-    fetchCoupons();
+   getProducts();
+   fetchCoupons();
   }, []);
 
   // ---------------- WHEN PAGE IS REFRESHED USER LOGGED OUT ISSUE --------------------
@@ -206,6 +206,7 @@ const ShopContextProvider = (props) => {
 
   //------------- FORGOT PASSWORD -----------------
   const forgotPassword = async (email) => {
+   
     try {
       const response = await axios.post(
         backendUrl + "/api/user/forgot-password",
@@ -227,7 +228,6 @@ const ShopContextProvider = (props) => {
 
   // ------------------- RESET PASSWORD --------------------
   const resetPassword = async (id, token, password) => {
-    console.log("PLAIN PASSWORD", password);
     try {
       const response = await axios.post(
         `${backendUrl}/api/user/reset-password/${id}/${token}`,

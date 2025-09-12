@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { useParams } from "react-router-dom";
 
-
 const ResetPassword = () => {
   const { id, token } = useParams();
   const [password, setPassword] = useState("");

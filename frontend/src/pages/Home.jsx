@@ -10,7 +10,7 @@ const Home = () => {
     <div>
       <DiscountBanner
         title="Special Offer Just for You!"
-        subtitle="Enjoy 10% OFF on all indoor plants this week 🌿"
+        subtitle="Enjoy 10% Discount on all plants this week 🌿"
         couponCode="Welcome10"
       />
       <LatestBanner />
