@@ -211,12 +211,14 @@ const ShopContextProvider = (props) => {
         backendUrl + "/api/user/forgot-password",
         { email }
       );
+
       if (response.data.success) {
-        toast.success("Reset Password Link Submitted");
+        toast.success("Reset link sent to your email");
         setEmail("");
+      } else {
+        toast.error(response.data.message);
       }
 
-      //alert("Reset link sent to your email");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -225,13 +227,12 @@ const ShopContextProvider = (props) => {
 
   // ------------------- RESET PASSWORD --------------------
   const resetPassword = async (id, token, password) => {
+    console.log("PLAIN PASSWORD", password);
     try {
       const response = await axios.post(
         `${backendUrl}/api/user/reset-password/${id}/${token}`,
         { password }
       );
-      console.log("forntend...", response.data);
-
       if (response.data.success) {
         navigate("/login");
         toast.success(response.data.message);

@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import nodemailer from "nodemailer";
 
+const clientUrl = process.env.CLIENT_PROD;
+
 // Create Token
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_TOKEN);
@@ -63,8 +65,14 @@ const loginUser = async (req, res) => {
       return res.json({ success: false, message: "user doesn't exists" });
     }
 
+    console.log("🔑 Login attempt for:", email);
+    console.log("👉 Entered plain password:", password);
+    console.log("👉 Stored hash in DB:", user.password);
+
     // Checking Password
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("✅ Password match result:", isMatch);
+
     if (isMatch) {
       const token = createToken(user._id);
       res.json({ success: true, token });
@@ -117,28 +125,32 @@ const forgotPassword = async (req, res) => {
       },
     });
 
+    const clientUrl = process.env.CLIENT_PROD; // make sure this exists
+    const resetLink = `${clientUrl}/reset-password/${user._id}/${token}`;
+
     let mailOptions = {
-  from: `"Support Team" <${process.env.EMAIL}>`,
-  to: user.email,
-  subject: "Password Reset Request",
-  text: `Hello ${user.name || "User"},\n\nYou requested a password reset. Click the link below to reset your password:\n\nhttp://localhost:5173/reset-password/${user._id}/${token}\n\nIf you did not request this, please ignore this email.`,
-  html: `
+      from: `"Support Team" <${process.env.EMAIL}>`,
+      to: user.email,
+      subject: "Password Reset Request",
+      text: `Hello ${
+        user.name || "User"
+      },\n\nYou requested a password reset. Click the link below to reset your password:\n\n${resetLink}\n\nIf you did not request this, please ignore this email.`,
+      html: `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <h2>Hello ${user.name || "User"},</h2>
       <p>You requested a password reset. Please click the button below to reset your password:</p>
-      <a href="http://localhost:5173/reset-password/${user._id}/${token}" 
-         style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #f97316; color: white; text-decoration: none; border-radius: 5px;">
+      <a href="${resetLink}" 
+         style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: green; color: white; text-decoration: none; border-radius: 5px;">
          Reset Password
       </a>
       <p style="margin-top: 20px;">If the button doesn’t work, copy and paste this link in your browser:</p>
-      <p><a href="http://localhost:5173/reset-password/${user._id}/${token}">http://localhost:5173/reset-password/${user._id}/${token}</a></p>
+      <p><a href="${resetLink}">"${resetLink}"</a></p>
       <br />
       <p>If you did not request this, you can safely ignore this email.</p>
       <p>— Support Team</p>
     </div>
   `,
-};
-
+    };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -157,11 +169,13 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
+  console.log("🔄 Reset password request for user:", id);
+  console.log("👉 New plain password received:", password);
 
   try {
     // Verify the token (signed when forgot-password was triggered)
-      const payload = jwt.verify(token, process.env.JWT_TOKEN);
-       if (payload.id !== id) {
+    const payload = jwt.verify(token, process.env.JWT_TOKEN);
+    if (payload.id !== id) {
       return res.json({ success: false, message: "Invalid token" });
     }
 
@@ -174,7 +188,7 @@ const resetPassword = async (req, res) => {
     // Hash new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
+    console.log("STORED PASSWORD..", hashedPassword);
     // Update user password
     user.password = hashedPassword;
     await user.save();

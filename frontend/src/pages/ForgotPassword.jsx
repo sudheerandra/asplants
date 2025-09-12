@@ -4,10 +4,17 @@ import { ShopContext } from "../context/ShopContext";
 const ForgotPassword = () => {
    
   const {email, setEmail, forgotPassword} = useContext(ShopContext);
+  const [loading, setLoading] = useState(false);
  
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    forgotPassword(email);
+    setLoading(true); // start loader
+    try {
+      await forgotPassword(email); // wait for async function
+    } finally {
+      setLoading(false); // stop loader
+      setEmail("");
+    }
     setEmail("");
   };
 
@@ -25,9 +32,10 @@ const ForgotPassword = () => {
         />
         <button
           type="submit"
-          className="bg-orange-500 text-white px:4 py-2 rounded"
+          disabled={loading}
+          className="bg-green-500 text-white py-2 rounded disabled:opacity-70"
         >
-          Submit
+          {loading ? "Please wait..." : "Submit"}
         </button>
       </form>
     </div>
