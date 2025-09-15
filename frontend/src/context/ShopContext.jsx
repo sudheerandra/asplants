@@ -28,6 +28,8 @@ const ShopContextProvider = (props) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [discount, setDiscount] = useState(0);
 
+  const unavailablePlants = [];
+
   // ------------ GET ALL PRODUCTS FROM BACKEND URL ------------------
   const getProducts = async () => {
     try {
@@ -117,8 +119,8 @@ const ShopContextProvider = (props) => {
 
   //------------- GET PRODUCTS AND COUPONS ------------------
   useEffect(() => {
-   getProducts();
-   fetchCoupons();
+    getProducts();
+    fetchCoupons();
   }, []);
 
   // ---------------- WHEN PAGE IS REFRESHED USER LOGGED OUT ISSUE --------------------
@@ -206,7 +208,6 @@ const ShopContextProvider = (props) => {
 
   //------------- FORGOT PASSWORD -----------------
   const forgotPassword = async (email) => {
-   
     try {
       const response = await axios.post(
         backendUrl + "/api/user/forgot-password",
@@ -219,7 +220,6 @@ const ShopContextProvider = (props) => {
       } else {
         toast.error(response.data.message);
       }
-
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -291,6 +291,7 @@ const ShopContextProvider = (props) => {
     setAvgRating,
     reviewCount,
     setReviewCount,
+    unavailablePlants,
   };
 
   return (

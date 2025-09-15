@@ -1,35 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext.jsx";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+  const { backendUrl } = useContext(ShopContext);
+  const [loading, setLoading] = useState(false);
 
-  const {backendUrl} = useContext(ShopContext)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const formData = {
-    name: e.target[0].value,
-    email: e.target[1].value,
-    message: e.target[2].value,
-  };
+    const formData = {
+      name: e.target[0].value,
+      email: e.target[1].value,
+      message: e.target[2].value,
+    };
 
-  try {
-    const res = await axios.post(`${backendUrl}/api/contact`, formData);
+    try {
+      const res = await axios.post(`${backendUrl}/api/contact`, formData);
 
-    if (res.data.success) {
-      alert("✅ Message sent successfully!");
-      e.target.reset();
-    } else {
-      alert("⚠️ " + res.data.msg);
+      if (res.data.success) {
+        toast.success("✅ Message sent successfully!");
+        e.target.reset();
+      } else {
+        toast.error("⚠️ " + res.data.msg);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("❌ Failed to send message, try again later.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error(err);
-    alert("❌ Failed to send message, try again later.");
-  }
-};
-
-
+  };
 
   return (
     <div className="my-12 px-6 md:px-16">
@@ -83,9 +86,37 @@ const handleSubmit = async (e) => {
             ></textarea>
             <button
               type="submit"
-              className="bg-green-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-700 active:bg-green-800 transition duration-200"
+              disabled={loading}
+              className={`flex items-center justify-center bg-green-600 text-white py-2 px-4 rounded-lg shadow-md transition duration-200 ${
+                loading
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:bg-green-700 active:bg-green-800"
+              }`}
             >
-              Send Message
+              {loading ? (
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              ) : (
+                "Send Message"
+              )}
             </button>
           </form>
         </div>

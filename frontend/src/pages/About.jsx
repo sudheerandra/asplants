@@ -31,7 +31,7 @@ const About = () => {
       care. From air-purifying indoor greens to ornamental favorites and
       lucky charm plants, our collection is curated to suit every lifestyle.
     </p>
-    <p className="leading-relaxed tracking-wide text-justify">
+    <p className="tracking-normal leading-relaxed [word-spacing:normal] text-justify">
       With a focus on <b>quality, sustainability, and customer happiness</b>,
       AS Plants makes gardening simple for everyone — from beginners to plant
       enthusiasts. Each plant is grown with love, packed eco-friendly, and

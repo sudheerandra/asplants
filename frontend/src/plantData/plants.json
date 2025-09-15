@@ -75,5 +75,27 @@
     "watering": "Water when topsoil is dry.",
     "soil": "Peat-based, well-draining soil.",
     "temperature": "18–26°C"
+  },
+  "Sapoto Chikoo": {
+  "description": "An evergreen tropical fruit tree known for its sweet, brown, grainy-textured fruits (also called Chiku).",
+  "light": "Thrives in full sunlight; needs at least 6–8 hours of direct sun daily.",
+  "watering": "Water regularly, especially during dry periods. Allow the topsoil to dry slightly between waterings.",
+  "soil": "Well-draining sandy loam or alluvial soil, rich in organic matter.",
+  "temperature": "20–35°C; sensitive to frost."
+},
+
+"Chamanthi - Pink, White, Yellow": {
+  "description": "A flowering plant (Chrysanthemum) popular for its vibrant blooms and use in garlands, decor, and traditional rituals.",
+  "light": "Prefers full sun; at least 5–6 hours of sunlight daily for best flowering.",
+  "watering": "Keep soil evenly moist; avoid waterlogging. Reduce watering after flowering season.",
+  "soil": "Well-draining garden soil enriched with compost or organic manure.",
+  "temperature": "15–30°C; prefers cool to moderate climate."
+}, 
+ "Curtain Creeper": {
+    "description": "A fast-growing ornamental climber often used for covering compound walls, fences, and pergolas, creating a lush green curtain effect.",
+    "light": "Thrives in full sunlight but can tolerate partial shade.",
+    "watering": "Water moderately; avoid overwatering. Drought-tolerant once established.",
+    "soil": "Well-draining garden soil enriched with compost.",
+    "temperature": "20–35°C; tolerates warm tropical climates well."
   }
 }

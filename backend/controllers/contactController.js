@@ -20,7 +20,7 @@ const contact = async (req, res) => {
 
     // 2️⃣ Email to YOU (the business owner)
     const mailOptionsToOwner = {
-      from: email,
+      from: `"AS Plants" <${process.env.SMTP_USER}>`,
       to: process.env.RECEIVER_EMAIL,
       subject: `🌱 New Contact Form Submission from ${name}`,
       text: `You got a new message from AS Plants contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
@@ -69,7 +69,7 @@ const sendContactForm = async (req, res) => {
 
     // 1️⃣ Send notification to AS Plants owner
     await transporter.sendMail({
-      from: email,
+      from: `"AS Plants" <${process.env.SMTP_USER}>`,
       to: process.env.RECEIVER_EMAIL,
       subject: `🌱 New Contact Form Submission from ${name}`,
       html: `
@@ -77,7 +77,15 @@ const sendContactForm = async (req, res) => {
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Message:</b></p>
-        <p style="background:#f9f9f9;padding:10px;border-radius:5px;">${message}</p>
+        <p style="background:#f9f9f9;padding:10px;border-radius:5px;">${message}</p><br><br>
+ <p>
+  <span style="color:#228B22; font-style:italic; font-size:16px;">
+    With love &amp; greenery,
+  </span><br>
+  <span style="color:#2E8B57; font-family:'Comic Sans MS', cursive; font-size:18px;">
+    AS Plants Team
+  </span>
+</p>
       `,
     });
 
@@ -94,8 +102,15 @@ const sendContactForm = async (req, res) => {
           <blockquote style="border-left: 4px solid #4CAF50; margin: 20px 0; padding-left: 10px; color: #555;">
             "${message}"
           </blockquote>
-          <p>✨ Meanwhile, explore our latest plant collections.</p>
-          <p style="margin-top: 20px;">With love & greenery,<br/><b>AS Plants Team 🌿</b></p>
+          <p>✨ Meanwhile, explore our latest plant collections.</p><br><br>
+<p>
+  <span style="color:#228B22; font-style:italic; font-size:16px;">
+    With love &amp; greenery,
+  </span><br>
+  <span style="color:#2E8B57; font-family:'Comic Sans MS', cursive; font-size:18px;">
+    AS Plants Team
+  </span>
+</p>
         </div>
       `,
     });

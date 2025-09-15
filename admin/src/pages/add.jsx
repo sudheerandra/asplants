@@ -63,7 +63,6 @@ const Add = (props) => {
       bestseller: e.target.checked,
     }));
   };
- 
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -75,14 +74,13 @@ const Add = (props) => {
       formData.append("price", formState.price);
       formData.append("bestseller", formState.bestseller);
 
-
       // Append images only if selected
       Object.entries(images).forEach(([key, file]) => {
         if (file) {
           formData.append(key, file);
         }
       });
-         
+
       const response = await axios.post(
         backendUrl + "/api/product/add",
         formData,
@@ -90,12 +88,12 @@ const Add = (props) => {
       );
       //console.log("RES...",response);
       //console.log("product data",response.data)
-      
+
       if (response.data.success) {
         toast.success(response.data.message);
         // Scroll to top
         window.scrollTo({ top: 0, behavior: "smooth" });
-        
+
         // Reset form
         setFormState({
           name: "",
@@ -185,21 +183,11 @@ const Add = (props) => {
           >
             <option value="Indoor">Indoor</option>
             <option value="Outdoor">Outdoor</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Flowers">Flowers</option>
+            <option value="Creepers">Creepers</option>
           </select>
         </div>
-        {/* <div>
-          <p className="mb-2">Sub Category</p>
-          <select
-            name="subCategory"
-            value={formState.subCategory}
-            onChange={fieldsHandler}
-            className="w-full px-3 py-2 border"
-          >
-            <option value="Topwear">Topwear</option>
-            <option value="Bottomwear">Bottomwear</option>
-            <option value="Winterwear">Winterwear</option>
-          </select>
-        </div> */}
         <div>
           <p className="mb-2">Product Price</p>
           <input

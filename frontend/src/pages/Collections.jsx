@@ -113,6 +113,33 @@ const Collection = () => {
               />
               Outdoor
             </p>
+            <p className="flex gap-2">
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Fruits"}
+                onChange={toggleCategory}
+              />
+              Fruits
+            </p>
+            <p className="flex gap-2">
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Flowers"}
+                onChange={toggleCategory}
+              />
+              Flowers
+            </p>
+             <p className="flex gap-2">
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Creepers"}
+                onChange={toggleCategory}
+              />
+              Creepers
+            </p>
           </div>
         </div>
       </div>

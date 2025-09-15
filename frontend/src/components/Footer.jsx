@@ -17,10 +17,10 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-8 px-6 py-12">
         {/* Logo & About */}
         <div>
-          <img src={assests.logo} className="mb-5 w-32" alt="AS Plants Logo" />
+          <img src={assests.logo} className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mr-4" alt="AS Plants Logo" />
           <p className="leading-relaxed tracking-wide text-justify text-gray-600">
             At <b className="text-green-700">AS Plants</b>, we believe every
-            home deserves the freshness and positivity of green life.
+            home deserves the freshness and positivity of green life.We are a modern nursery-to-home ecommerce brand, bringing you <b>healthy, hand-nurtured plants</b> delivered with care. From air-purifying indoor greens to ornamental favorites and lucky charm plants, our collection is curated to suit every lifestyle.
           </p>
         </div>
 

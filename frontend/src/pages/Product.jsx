@@ -8,14 +8,29 @@ import PlantCareGuide from "../components/PlantCartGuide";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-
 const Product = () => {
-  const { products, currency, addToCart, avgRating,reviewCount, setReviewCount, setReviews, setAvgRating, backendUrl} = useContext(ShopContext);
+  const {
+    products,
+    currency,
+    addToCart,
+    avgRating,
+    reviewCount,
+    setReviewCount,
+    setReviews,
+    setAvgRating,
+    backendUrl,
+    unavailablePlants,
+  
+  } = useContext(ShopContext);
   const { productId } = useParams();
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
   const [newReview, setNewReview] = useState(null);
+  const availablePlantName = products.map((product) => product.name);
+  const unavailableFound = availablePlantName.filter((name) =>
+    unavailablePlants.includes(name)
+  );
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -41,7 +56,10 @@ const Product = () => {
 
   useEffect(() => {
     fetchProductData();
-  }, [products,productId]);
+  }, [products, productId]);
+
+  const isAvailable =
+    productData && !unavailablePlants.includes(productData.name);
 
   return productData ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
@@ -57,8 +75,7 @@ const Product = () => {
                 className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
                 key={index}
                 src={item}
-                 alt={productData.name}
-              
+                alt={productData.name}
               />
             ))}
           </div>
@@ -68,8 +85,7 @@ const Product = () => {
                 transition-transform duration-300 ease-in-out 
                 group-hover:scale-110 group-hover:shadow-lg group-hover:opacity-90"
               src={image}
-               alt={productData.name}
-              
+              alt={productData.name}
             />
           </div>
         </div>
@@ -94,16 +110,27 @@ const Product = () => {
           <p className="mt-5 font-medium text-2xl">
             {currency} {productData.price}
           </p>
+          {!isAvailable && (
+            <p className="mt-2 text-red-500 font-semibold">
+              Currently unavailable
+            </p>
+          )}
           <p className="mt-3 text-gray-500 md:w-4/5 font-medium">
             {productData.description}
           </p>
 
           <button
             onClick={() => addToCart(productData._id)}
-            className="bg-green-600 text-white px-4 py-2 mt-3 rounded-lg shadow-md 
-             hover:bg-green-700 active:bg-green-800 transition duration-200"
+            disabled={!isAvailable}
+            className={`px-3 py-1 mt-3 rounded 
+          ${
+            isAvailable
+              ? "bg-green-500 text-white hover:bg-green-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }
+        `}
           >
-            ADD TO CART
+            {isAvailable ? "ADD TO CART" : "OUT OF STOCK"}
           </button>
           <hr className="mt-3 sm:w-4/5" />
           <div className="flex flex-col gap-2 mt-2">
@@ -133,7 +160,7 @@ const Product = () => {
         </button>
       </div>
       {activeTab === "description" ? (
-        <PlantCareGuide productData={productData}/>
+        <PlantCareGuide productData={productData} />
       ) : (
         <div className="border p-4">
           <ReviewForm
@@ -145,9 +172,7 @@ const Product = () => {
       )}
 
       {/* .............. Related Products .................... */}
-      <RelatedProducts
-        category={productData.category}
-      />
+      <RelatedProducts category={productData.category} />
     </div>
   ) : (
     <div className="opacity-0"></div>

@@ -79,7 +79,7 @@ const Login = () => {
           name="name"
           value={fields.name}
           onChange={fieldsHandler}
-          className="w-full px-2 py-3 border border-gray-800"
+          className="w-full px-2 py-3 border border-green-500"
           required
         />
       )}
@@ -89,7 +89,7 @@ const Login = () => {
         name="email"
         value={fields.email}
         onChange={fieldsHandler}
-        className="w-full px-2 py-3 border border-gray-800"
+        className="w-full px-2 py-3 border border-green-500"
         required
       />
       <input
@@ -98,7 +98,7 @@ const Login = () => {
         name="password"
         value={fields.password}
         onChange={fieldsHandler}
-        className="w-full px-2 py-3 border border-gray-800"
+        className="w-full px-2 py-3 border border-green-500"
         required
       />
       <div className="w-full flex justify-between text-sm mt-[-8px]">
@@ -119,7 +119,7 @@ const Login = () => {
           </p>
         )}
       </div>
-      <button className="bg-gray-800 text-white border px-8 py-2">
+      <button className="bg-green-800 rounded-full text-white border px-8 py-2">
         {currentState === "Login" ? "Sign In" : "Sign Up"}
       </button>
     </form>

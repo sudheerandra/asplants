@@ -36,11 +36,11 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full bg-white shadow-md sticky top-0 z-50">
+    <header className="w-full bg-green-50  shadow-md sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 sm:px-8 py-3 font-medium">
         {/* Logo */}
         <Link to="/">
-          <img src={assests.logo} className="w-32 sm:w-36" alt="logo" />
+          <img src={assests.logo} className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mr-4" alt="logo" />
         </Link>
 
         {/* Desktop Menu */}
@@ -128,7 +128,7 @@ const Navbar = () => {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed top-0 right-0 h-screen bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+        className={`fixed top-0 right-0 h-screen bg-green-50 shadow-lg transform transition-transform duration-300 z-50 ${
           visible ? "translate-x-0 w-64" : "translate-x-full w-64"
         }`}
       >

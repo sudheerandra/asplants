@@ -13,22 +13,19 @@ const ProductItems = ({
   reviewCount,
   avgRating,
 }) => {
-  const { currency } = useContext(ShopContext);
-  // const Navigate = useNavigate();
-  // const handleScroll = () => {
-  //   if (scrollToTop) {
-  //     window.scrollTo({ top: 0, behavior: "smooth" });
-  //   }
-  //   Navigate(`/product/${id}`);
-  // };
+  const { currency, unavailablePlants  } = useContext(ShopContext);
+  const isAvailable = !unavailablePlants.includes(name);
+
   return (
-    <Link
+   <div className={`relative ${!isAvailable ? "opacity-50 pointer-events-none" : ""}`}>
+     <Link
       className="text-gray-700 cursor-pointer block group"
       to={`/product/${id}`}
       onClick={() =>
         scrollToTop && window.scrollTo({ top: 0, behavior: "smooth" })
       }
     >
+    
       {/* RELATED PRODUCTS */}
       <div className="overflow-hidden">
         <LazyLoadImage
@@ -39,6 +36,16 @@ const ProductItems = ({
           alt=""
           effect="blur"
         />
+          {/* Overlay for unavailable products */}
+          {!isAvailable && (
+            <div className="absolute inset-0 bg-white bg-opacity-70 flex flex-col items-center justify-center rounded-lg">
+              {/* Small Disabled Icon */}
+              <div className="w-8 h-8 border-2 border-gray-500 rounded-full relative mb-2">
+                <div className="absolute inset-0 bg-gray-500 rotate-45 origin-center transform"></div>
+              </div>
+              <p className="text-gray-700 font-semibold text-sm">Currently Unavailable</p>
+            </div>
+          )}
       </div>
       <p className="pt-3 pb-1 text-sm">{name}</p>
       <p className="font-medium text-sm">
@@ -61,7 +68,10 @@ const ProductItems = ({
         ))}
         <p className="pl-2">({reviewCount})</p>
       </div>
+
     </Link>
+    
+   </div>
   );
 };
 
