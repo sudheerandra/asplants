@@ -21,7 +21,7 @@ const Contact = () => {
       const res = await axios.post(`${backendUrl}/api/contact`, formData);
 
       if (res.data.success) {
-        toast.success("✅ Message sent successfully!");
+        toast.success("Message sent successfully!");
         e.target.reset();
       } else {
         toast.error("⚠️ " + res.data.msg);
@@ -53,9 +53,9 @@ const Contact = () => {
           </p>
 
           <div className="space-y-2 text-gray-800">
-            <p>📍 <b>Address:</b> Green Valley, Hyderabad, India</p>
-            <p>📞 <b>Phone:</b> +91 98765 43210</p>
-            <p>✉️ <b>Email:</b> support@asplants.com</p>
+            <p>📍 <b>Address:</b> Dulla, India</p>
+            <p>📞 <b>Phone:</b> +91 93815 68173</p>
+            <p>✉️ <b>Email:</b> asplants.in@gmail.com</p>
             <p>⏰ <b>Hours:</b> Mon – Sat, 9am – 7pm</p>
           </div>
         </div>

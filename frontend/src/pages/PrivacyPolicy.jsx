@@ -67,8 +67,8 @@ const PrivacyPolicy = () => {
         contact us at:
       </p>
       <p className="mt-2 font-semibold">
-        📧 Email: support@asplants.com <br />
-        📍 Address: Hyderabad, India
+        📧 Email: asplants.in@gmail.com <br />
+        📍 Address: Dulla, India
       </p>
 
       <p className="mt-6 text-sm text-gray-600">

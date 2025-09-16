@@ -54,8 +54,8 @@ const Delivery = () => {
         For delivery-related queries, you can reach out to us at:
       </p>
       <p className="font-semibold">
-        📧 Email: support@asplants.com <br />
-        📞 Phone: +91-9876543210
+        📧 Email: asplants.in@gmail.com <br />
+        📞 Phone: +91-9381568173
       </p>
 
       <p className="mt-6 text-sm text-gray-600 text-center">
