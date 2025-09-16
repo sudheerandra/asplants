@@ -20,11 +20,22 @@ connectCloudinary();
 
 
 // middlewares
+const allowedOrigins = [
+  process.env.CLIENT_PROD,      // https://asplants-frontend.vercel.app
+  process.env.CLIENT_ADMIN_PROD,       // https://asplants-admin.vercel.app
+  process.env.CLIENT_URL,       // localhost for dev
+];
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" 
-      ? process.env.CLIENT_PROD
-      : process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "token"],
     credentials: true,

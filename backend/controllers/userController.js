@@ -127,7 +127,7 @@ const forgotPassword = async (req, res) => {
     const resetLink = `${clientUrl}/reset-password/${user._id}/${token}`;
   
     let mailOptions = {
-      from: `"Support Team" <${process.env.EMAIL}>`,
+      from: `"Support Team" <${process.env.SMTP_USER}>`,
       to: user.email,
       subject: "Password Reset Request",
       text: `Hello ${
