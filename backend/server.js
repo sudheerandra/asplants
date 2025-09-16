@@ -20,8 +20,19 @@ connectCloudinary();
 
 
 // middlewares
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_PROD, // production frontend
+      process.env.CLIENT_URL, // local dev frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cors());
+
 
 // api endpoints
 app.use("/api/product", productRouter);
@@ -31,23 +42,6 @@ app.use("/api/order", orderRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/coupons", couponRoutes);
-
-export default async function handler(req, res) {
-  try {
-    console.log("🚀 Vercel ENV SMTP_USER:", process.env.SMTP_USER);
-    console.log("🚀 Vercel ENV SMTP_PASS:", process.env.SMTP_PASS ? "LOADED" : "MISSING");
-
-    return res.status(200).json({
-      smtpUser: process.env.SMTP_USER,
-      smtpPassLoaded: !!process.env.SMTP_PASS,
-    });
-  } catch (err) {
-    console.error("❌ Error in debug route:", err);
-    return res.status(500).json({ error: err.message });
-  }
-}
-
-
 
 
 
