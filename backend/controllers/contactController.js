@@ -1,8 +1,6 @@
 import nodemailer from "nodemailer";
 
 const contact = async (req, res) => {
-  
-  
   try {
     const { name, email, message } = req.body;
 
@@ -12,6 +10,8 @@ const contact = async (req, res) => {
         .json({ success: false, msg: "All fields required" });
     }
 
+     console.log("SMTP User in prod:", process.env.SMTP_USER);
+
     // 1️⃣ Transporter (works with Gmail App Password OR SMTP key from provider)
     const transporter = nodemailer.createTransport({
       service: "gmail", // or smtp-relay.brevo.com, smtp.sendgrid.net, etc.
@@ -20,6 +20,8 @@ const contact = async (req, res) => {
         pass: process.env.SMTP_PASS,
       },
     });
+
+
 
     // 2️⃣ Email to YOU (the business owner)
     const mailOptionsToOwner = {
@@ -63,7 +65,7 @@ const transporter = nodemailer.createTransport({
 const sendContactForm = async (req, res) => {
   try {
     const { name, email, message } = req.body;
-console.log("SMTP User in prod:", process.env.SMTP_USER);
+    console.log("SMTP User in prod:", process.env.SMTP_USER);
     if (!name || !email || !message) {
       return res
         .status(400)
