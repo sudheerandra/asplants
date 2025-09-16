@@ -10,7 +10,7 @@ const contact = async (req, res) => {
         .json({ success: false, msg: "All fields required" });
     }
 
-     console.log("SMTP User in prod:", process.env.SMTP_USER);
+     console.log("🚀 Using SMTP_USER:", process.env.SMTP_USER);
 
     // 1️⃣ Transporter (works with Gmail App Password OR SMTP key from provider)
     const transporter = nodemailer.createTransport({
@@ -53,19 +53,12 @@ const contact = async (req, res) => {
   }
 };
 
-// reusable transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail", // Or use your SMTP provider
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 const sendContactForm = async (req, res) => {
   try {
     const { name, email, message } = req.body;
-    console.log("SMTP User in prod:", process.env.SMTP_USER);
+   console.log("🚀 Using SMTP_USER:", process.env.SMTP_USER);
+
     if (!name || !email || !message) {
       return res
         .status(400)
