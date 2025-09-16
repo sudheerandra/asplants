@@ -26,7 +26,7 @@ app.use(
       ? process.env.CLIENT_PROD
       : process.env.CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "token"],
     credentials: true,
   })
 );
