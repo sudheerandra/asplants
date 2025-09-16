@@ -1,8 +1,11 @@
 import nodemailer from "nodemailer";
 
 const contact = async (req, res) => {
+  
+  
   try {
     const { name, email, message } = req.body;
+
     if (!name || !email || !message) {
       return res
         .status(400)
@@ -60,7 +63,7 @@ const transporter = nodemailer.createTransport({
 const sendContactForm = async (req, res) => {
   try {
     const { name, email, message } = req.body;
-
+console.log("SMTP User in prod:", process.env.SMTP_USER);
     if (!name || !email || !message) {
       return res
         .status(400)
