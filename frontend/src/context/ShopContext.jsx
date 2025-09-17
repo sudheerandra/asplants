@@ -92,6 +92,7 @@ const ShopContextProvider = (props) => {
         {
           code,
           cartAmount: getCartAmount(),
+          cartItems
         },
         { headers: { token } }
       );

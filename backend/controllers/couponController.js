@@ -1,5 +1,6 @@
 
 import Coupon from "../models/couponModel.js";
+import Product from "../models/productModel.js"
 
 
 // ✅ Create a coupon
@@ -91,7 +92,7 @@ export const toggleCoupon = async (req, res) => {
 // ✅ Apply Coupon
 export const applyCoupon = async (req, res) => {
   try {
-    const { code, cartAmount, userId } = req.body;
+    const { code, cartAmount, userId, cartItems } = req.body;
 
     // 🔹 Find active coupon
     const coupon = await Coupon.findOne({ code, isActive: true });
@@ -109,8 +110,21 @@ export const applyCoupon = async (req, res) => {
       return res.status(400).json({ success: false, message: "Coupon expired" });
     }
 
-    // 🔹 Check minimum cart value
-    if (cartAmount < (coupon.minCartValue || 0)) {
+     // 🔹 Convert cartItems object → array with price
+    let formattedCart = [];
+    let recalculatedCartTotal = 0;
+
+    for (const [productId, qty] of Object.entries(cartItems)) {
+      const product = await Product.findById(productId).select("price");
+      if (product) {
+        const subtotal = product.price * qty;
+        recalculatedCartTotal += subtotal;
+        formattedCart.push({ productId, qty, price: product.price, subtotal });
+      }
+    }
+
+    // 🔹 Check minimum cart value (for cart-wide coupons)
+    if (coupon.appliesTo === "cart" && recalculatedCartTotal < (coupon.minCartValue || 0)) {
       return res.status(400).json({
         success: false,
         message: `Minimum cart value should be ₹${coupon.minCartValue}`,
@@ -119,10 +133,31 @@ export const applyCoupon = async (req, res) => {
 
     // 🔹 Calculate discount
     let discountAmount = 0;
-    if (coupon.discountType === "percentage") {
-      discountAmount = Math.floor((cartAmount * coupon.discountValue) / 100);
-    } else {
-      discountAmount = coupon.discountValue;
+      if (coupon.appliesTo === "cart") {
+      // ✅ Cart-wide coupon
+      if (coupon.discountType === "percentage") {
+        discountAmount = Math.floor((recalculatedCartTotal * coupon.discountValue) / 100);
+      } else {
+        discountAmount = coupon.discountValue;
+      }
+    } else if (coupon.appliesTo === "product" && coupon.productId) {
+      // ✅ Product-specific coupon
+      const productInCart = formattedCart.find(
+        (item) => String(item.productId) === String(coupon.productId)
+      );
+
+      if (!productInCart) {
+        return res.status(400).json({
+          success: false,
+          message: "This coupon applies only to a specific product not in your cart",
+        });
+      }
+
+       if (coupon.discountType === "percentage") {
+        discountAmount = Math.floor((productInCart.subtotal * coupon.discountValue) / 100);
+      } else {
+        discountAmount = coupon.discountValue;
+      }
     }
 
     // 🔹 Save usage
@@ -134,6 +169,7 @@ export const applyCoupon = async (req, res) => {
       success: true,
       discountAmount,
       coupon,
+      recalculatedCartTotal
     });
   } catch (error) {
     console.error("Apply coupon error:", error);
