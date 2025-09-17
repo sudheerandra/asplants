@@ -63,8 +63,6 @@ const removeProduct = async (req, res) => {
   }
 };
 
-
-
 // Function to list products with review stats
 const listProducts = async (req, res) => {
   try {
@@ -100,7 +98,6 @@ const listProducts = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // Fuction for single product info
 const singleProduct = async (req, res) => {

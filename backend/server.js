@@ -24,6 +24,7 @@ const allowedOrigins = [
   process.env.CLIENT_PROD,      // https://asplants-frontend.vercel.app
   process.env.CLIENT_ADMIN_PROD,       // https://asplants-admin.vercel.app
   process.env.CLIENT_URL,       // localhost for dev
+  process.env.CLIENT_ADMIN_URL  // LOCAL HOST FOR ADMIN
 ];
 app.use(
   cors({

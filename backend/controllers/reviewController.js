@@ -24,6 +24,7 @@ import Review from "../models/ReviewModel.js";
   }
 };
 
+// GET REVIEWS
 export const getReviews = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -67,12 +68,7 @@ export const getAllReviewStats = async (req, res) => {
     ]);
 
     res.json(stats); 
-    // Example response:
-    // [
-    //   { _id: "productId1", avgRating: 4.5, reviewCount: 12 },
-    //   { _id: "productId2", avgRating: 3.8, reviewCount: 5 }
-    // ]
-  } catch (error) {
+   } catch (error) {
     console.error("Error in getAllReviewStats:", error);
     res.status(500).json({ message: error.message });
   }

@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 
+//------ CONTACT FORM FORM FRONTEND ----------------
 const contact = async (req, res) => {
   try {
     const { name, email, message } = req.body;
@@ -53,7 +54,7 @@ const contact = async (req, res) => {
   }
 };
 
-
+//--------- AUTO REPLAY --------------------------
 const sendContactForm = async (req, res) => {
   try {
     const { name, email, message } = req.body;

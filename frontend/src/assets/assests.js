@@ -12,8 +12,6 @@ import star_dull_icon from "./star_dull_icon.png"
 import bin_icon from "./bin_icon.png";
 import razorpay_icon from "./razorpay_logo.png";
 import stripe_icon from "./stripe_logo.png"
-import alovera from "./alovera.jpeg";
-import alovera1 from "./alovera_shape.jpeg"
 
 export const assests = {
     logo,
@@ -32,55 +30,55 @@ export const assests = {
     stripe_icon
 }
 
-export const productsData =[ 
-  {
-        _id: "aaaaa",
-        name: "Snake Plant",
-        description: "The snake plant is a resilient, low-maintenance houseplant (_Dracaena trifasciata) native to tropical West Africa, known for its sword-shaped leaves with green and yellow variegation",
-        price: 499,
-        image: [snake],
-        category: "Indoor",
-        date: 1716634345448,
-        bestseller: true
-    },  
-    {
-        _id: "bbbb",
-        name: "Bamboo",
-        description: "Lucky Bamboo is a slender, upright houseplant from Central Africa, not a true bamboo, but rather a member of the Asparagaceae family known for its ease of care and decorative appeal.",
-        price: 599,
-        image: [bamboo],
-        category: "Indoor",
-        date: 1716634345448,
-        bestseller: true
-    },
-      {
-        _id: "cccc",
-        name: "Lemon Grass Plant",
-        description: "The lemongrass plant (Cymbopogon citratus) is a tropical, perennial grass prized for its fresh, citrusy aroma and flavor.",
-        price: 699,
-        image: [lemonplant],
-        category: "Outdoor",
-        date: 1716634345448,
-        bestseller: true
-    },
-    {
-        _id: "dddd",
-        name: "Alovera",
-        description: "Aloe vera is a stemless, succulent xerophyte with thick, fleshy, green to grey-green leaves that store water and have serrated edges and white flecks",
-        price: 299,
-        image: [alovera],
-        category: "Outdoor",
-        date: 1716634345448,
-        bestseller: true
-    },
-    {
-        _id: "eeee",
-        name: "alovera_shape",
-        description: "Aloe vera is a stemless, succulent xerophyte with thick, fleshy, green to grey-green leaves that store water and have serrated edges and white flecks.",
-        price: 199,
-        image: [alovera1],
-        category: "Outdoor",
-        date: 1716634345448,
-        bestseller: true
-    }
-    ]
+// export const productsData =[ 
+//   {
+//         _id: "aaaaa",
+//         name: "Snake Plant",
+//         description: "The snake plant is a resilient, low-maintenance houseplant (_Dracaena trifasciata) native to tropical West Africa, known for its sword-shaped leaves with green and yellow variegation",
+//         price: 499,
+//         image: [snake],
+//         category: "Indoor",
+//         date: 1716634345448,
+//         bestseller: true
+//     },  
+//     {
+//         _id: "bbbb",
+//         name: "Bamboo",
+//         description: "Lucky Bamboo is a slender, upright houseplant from Central Africa, not a true bamboo, but rather a member of the Asparagaceae family known for its ease of care and decorative appeal.",
+//         price: 599,
+//         image: [bamboo],
+//         category: "Indoor",
+//         date: 1716634345448,
+//         bestseller: true
+//     },
+//       {
+//         _id: "cccc",
+//         name: "Lemon Grass Plant",
+//         description: "The lemongrass plant (Cymbopogon citratus) is a tropical, perennial grass prized for its fresh, citrusy aroma and flavor.",
+//         price: 699,
+//         image: [lemonplant],
+//         category: "Outdoor",
+//         date: 1716634345448,
+//         bestseller: true
+//     },
+//     {
+//         _id: "dddd",
+//         name: "Alovera",
+//         description: "Aloe vera is a stemless, succulent xerophyte with thick, fleshy, green to grey-green leaves that store water and have serrated edges and white flecks",
+//         price: 299,
+//         image: [alovera],
+//         category: "Outdoor",
+//         date: 1716634345448,
+//         bestseller: true
+//     },
+//     {
+//         _id: "eeee",
+//         name: "alovera_shape",
+//         description: "Aloe vera is a stemless, succulent xerophyte with thick, fleshy, green to grey-green leaves that store water and have serrated edges and white flecks.",
+//         price: 199,
+//         image: [alovera1],
+//         category: "Outdoor",
+//         date: 1716634345448,
+//         bestseller: true
+//     }
+//     ]

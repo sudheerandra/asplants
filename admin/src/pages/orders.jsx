@@ -48,7 +48,7 @@ const Orders = (props) => {
       );
       if (response.data.success) {
         await getOrders();
-        toast.success(response.data.message)
+        toast.success(response.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -81,8 +81,7 @@ const Orders = (props) => {
                     } else {
                       return (
                         <p className="py-0.5" key={index}>
-                          {item.name} x {item.quantity}
-                          ,
+                          {item.name} x {item.quantity},
                         </p>
                       );
                     }
@@ -112,8 +111,17 @@ const Orders = (props) => {
                 </p>
                 <p>Method: {order.paymentMethod}</p>
                 <p>Payment: {order.payment ? "Done" : "Pending"}</p>
-                <p>Date: {new Date(order.date).toDateString()}</p>
                 <p>OrderId : {order._id} </p>
+                <p
+                  className={`font-bold ${
+                    new Date(order.date).toDateString() ===
+                    new Date().toDateString()
+                      ? "text-red-700"
+                      : "text-green-500"
+                  }`}
+                >
+                  Date: {new Date(order.date).toDateString()}
+                </p>
               </div>
             </div>
             <div>
