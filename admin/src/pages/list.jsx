@@ -50,6 +50,7 @@ const List = (props) => {
 
   return (
     <div className="w-full">
+    <h1 className="text-orange-600 text-center font-bold m-3">Products List - {listProducts.length}</h1>
   {listProducts.length > 0 ? (
     <div>
       {/* 📱 Mobile: Card layout */}

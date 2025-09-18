@@ -92,7 +92,7 @@ const ShopContextProvider = (props) => {
         {
           code,
           cartAmount: getCartAmount(),
-          cartItems
+          cartItems,
         },
         { headers: { token } }
       );
@@ -100,7 +100,16 @@ const ShopContextProvider = (props) => {
       if (response.data.success) {
         setDiscount(response.data.discountAmount);
         setAppliedCoupon(response.data.coupon);
-        toast.success(`Coupon "${code}" applied! 🎉`);
+
+        if (response.data.discountAmount > 0) {
+          toast.success(
+            `Coupon "${code}" applied! 🎉 You saved ₹${response.data.discountAmount}`
+          );
+        } else {
+          toast.error(
+            "This coupon applies only to a specific product not in your cart"
+          );
+        }
       } else {
         setDiscount(0);
         setAppliedCoupon(null);

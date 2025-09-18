@@ -1,7 +1,5 @@
-
 import Coupon from "../models/couponModel.js";
-import Product from "../models/productModel.js"
-
+import Product from "../models/productModel.js";
 
 // ✅ Create a coupon
 export const createCoupon = async (req, res) => {
@@ -30,7 +28,12 @@ export const createCoupon = async (req, res) => {
     };
 
     // 🔹 Validate required fields manually (extra safety)
-    if (!payload.code || !payload.discountType || !payload.discountValue || !payload.expiryDate) {
+    if (
+      !payload.code ||
+      !payload.discountType ||
+      !payload.discountValue ||
+      !payload.expiryDate
+    ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -97,20 +100,26 @@ export const applyCoupon = async (req, res) => {
     // 🔹 Find active coupon
     const coupon = await Coupon.findOne({ code, isActive: true });
     if (!coupon) {
-      return res.status(404).json({ success: false, message: "Invalid or inactive coupon" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Invalid or inactive coupon" });
     }
 
     // 🔹 Check if user already used it
     if (coupon.usedBy?.includes(userId)) {
-      return res.status(400).json({ success: false, message: "Coupon already used by you!" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Coupon already used by you!" });
     }
 
     // 🔹 Check expiry
     if (coupon.expiryDate && new Date(coupon.expiryDate) < new Date()) {
-      return res.status(400).json({ success: false, message: "Coupon expired" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Coupon expired" });
     }
 
-     // 🔹 Convert cartItems object → array with price
+    // 🔹 Convert cartItems object → array with price
     let formattedCart = [];
     let recalculatedCartTotal = 0;
 
@@ -124,7 +133,10 @@ export const applyCoupon = async (req, res) => {
     }
 
     // 🔹 Check minimum cart value (for cart-wide coupons)
-    if (coupon.appliesTo === "cart" && recalculatedCartTotal < (coupon.minCartValue || 0)) {
+    if (
+      coupon.appliesTo === "cart" &&
+      recalculatedCartTotal < (coupon.minCartValue || 0)
+    ) {
       return res.status(400).json({
         success: false,
         message: `Minimum cart value should be ₹${coupon.minCartValue}`,
@@ -133,10 +145,12 @@ export const applyCoupon = async (req, res) => {
 
     // 🔹 Calculate discount
     let discountAmount = 0;
-      if (coupon.appliesTo === "cart") {
+    if (coupon.appliesTo === "cart") {
       // ✅ Cart-wide coupon
       if (coupon.discountType === "percentage") {
-        discountAmount = Math.floor((recalculatedCartTotal * coupon.discountValue) / 100);
+        discountAmount = Math.floor(
+          (recalculatedCartTotal * coupon.discountValue) / 100
+        );
       } else {
         discountAmount = coupon.discountValue;
       }
@@ -149,32 +163,39 @@ export const applyCoupon = async (req, res) => {
       if (!productInCart) {
         return res.status(400).json({
           success: false,
-          message: "This coupon applies only to a specific product not in your cart",
+          message:
+            "This coupon applies only to a specific product not in your cart",
         });
       }
 
-       if (coupon.discountType === "percentage") {
-        discountAmount = Math.floor((productInCart.subtotal * coupon.discountValue) / 100);
+      if (coupon.discountType === "percentage") {
+        discountAmount = Math.floor(
+          (productInCart.subtotal * coupon.discountValue) / 100
+        );
       } else {
         discountAmount = coupon.discountValue;
       }
     }
 
-    // 🔹 Save usage
-    coupon.usedBy = coupon.usedBy || [];
-    coupon.usedBy.push(userId);
-    await coupon.save();
+    // 🔹 Save usage only if discount actually applied
+    if (discountAmount > 0) {
+      coupon.usedBy = coupon.usedBy || [];
+      if (!coupon.usedBy.includes(userId)) {
+        coupon.usedBy.push(userId);
+      }
+      await coupon.save();
+    }
 
     return res.json({
       success: true,
       discountAmount,
       coupon,
-      recalculatedCartTotal
+      recalculatedCartTotal,
     });
   } catch (error) {
     console.error("Apply coupon error:", error);
-    res.status(500).json({ success: false, message: "Server error applying coupon" });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error applying coupon" });
   }
 };
-
-

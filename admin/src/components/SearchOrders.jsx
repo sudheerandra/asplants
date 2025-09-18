@@ -149,7 +149,7 @@ const SearchOrders = ({ token }) => {
           <li key={name} className="font-medium break-words">
             {name} →{" "}
             <span className="text-green-700">
-              {data.quantity} pcs (₹{data.total})
+              {data.quantity} pcs
             </span>
           </li>
         ))}

@@ -58,7 +58,7 @@ const Orders = (props) => {
 
   return (
     <div>
-      <h3>Orders List</h3>
+      <h2 className="text-orange-600 font-bold text-center m-3 ">Orders List - {orders.length}</h2>
       {/* Displaying item properties */}
       <div>
         {orders.map((order, index) => (

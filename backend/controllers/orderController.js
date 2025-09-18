@@ -16,7 +16,14 @@ const razorpay = new Razorpay({
 //PALACING ORDER USING COD
 const placeOder = async (req, res) => {
   try {
-    const { userId, items, amount, address, discount = 0 } = req.body;
+    const {
+      userId,
+      items,
+      amount,
+      address,
+      discount = 0,
+      delivery_fee = 0,
+    } = req.body;
 
     //CREATE ORDER DATA TO STORE DATABASE
     const orderData = {
@@ -24,6 +31,8 @@ const placeOder = async (req, res) => {
       items,
       amount,
       address,
+      discount,
+      delivery_fee,
       paymentMethod: "COD",
       payment: false,
       date: Date.now(),

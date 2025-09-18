@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import nodemailer from "nodemailer";
 
-
 // Create Token
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_TOKEN);
@@ -125,7 +124,7 @@ const forgotPassword = async (req, res) => {
         : process.env.CLIENT_URL;
 
     const resetLink = `${clientUrl}/reset-password/${user._id}/${token}`;
-  
+
     let mailOptions = {
       from: `"Support Team" <${process.env.SMTP_USER}>`,
       to: user.email,
@@ -180,12 +179,25 @@ const resetPassword = async (req, res) => {
       return res.json({ success: false, message: "User not found" });
     }
 
+    // Check token validity against DB
+    if (
+      !user.resetPasswordToken ||
+      user.resetPasswordToken !== token ||
+      user.resetPasswordExpires < Date.now()
+    ) {
+      return res.json({ success: false, message: "Invalid or expired token" });
+    }
+
     // Hash new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Update user password
     user.password = hashedPassword;
+
+    // Invalidate reset token (single-use)
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
     await user.save();
 
     res.json({ success: true, message: "Password reset successfully" });
