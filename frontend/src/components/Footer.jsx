@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { assests } from "../assets/assests";
 import { Link, useLocation } from "react-router-dom";
-
+import { SiThreads } from "react-icons/si";
 import { Facebook, Instagram, Twitter, Phone, Mail } from "lucide-react";
 
 const Footer = () => {
@@ -17,10 +17,18 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-8 px-6 py-12">
         {/* Logo & About */}
         <div>
-          <img src={assests.logo} className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mr-4" alt="AS Plants Logo" />
+          <img
+            src={assests.logo}
+            className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mr-4"
+            alt="AS Plants Logo"
+          />
           <p className="leading-relaxed tracking-wide text-justify text-gray-600">
             At <b className="text-green-700">AS Plants</b>, we believe every
-            home deserves the freshness and positivity of green life.We are a modern nursery-to-home ecommerce brand, bringing you <b>healthy, hand-nurtured plants</b> delivered with care. From air-purifying indoor greens to ornamental favorites and lucky charm plants, our collection is curated to suit every lifestyle.
+            home deserves the freshness and positivity of green life.We are a
+            modern nursery-to-home ecommerce brand, bringing you{" "}
+            <b>healthy, hand-nurtured plants</b> delivered with care. From
+            air-purifying indoor greens to ornamental favorites and lucky charm
+            plants, our collection is curated to suit every lifestyle.
           </p>
         </div>
 
@@ -67,7 +75,7 @@ const Footer = () => {
       {/* Social Media Icons */}
       <div className="flex justify-center gap-6 py-6">
         <a
-          href="https://facebook.com"
+          href="https://www.facebook.com/profile.php?id=61580635876427"
           target="_blank"
           rel="noreferrer"
           className="text-gray-600 hover:text-green-600 transition-colors duration-200"
@@ -75,7 +83,15 @@ const Footer = () => {
           <Facebook className="w-5 h-5" />
         </a>
         <a
-          href="https://instagram.com"
+          href="https://www.threads.net/@asplants_plants"
+          target="_blank"
+          rel="noreferrer"
+          className="text-gray-600 hover:text-green-600 transition-colors duration-200"
+        >
+          <SiThreads className="w-5 h-5" />
+        </a>
+        <a
+          href="https://www.instagram.com/asplants_plants"
           target="_blank"
           rel="noreferrer"
           className="text-gray-600 hover:text-green-600 transition-colors duration-200"
@@ -83,7 +99,7 @@ const Footer = () => {
           <Instagram className="w-5 h-5" />
         </a>
         <a
-          href="https://twitter.com"
+          href="https://x.com/asplants_in"
           target="_blank"
           rel="noreferrer"
           className="text-gray-600 hover:text-green-600 transition-colors duration-200"
