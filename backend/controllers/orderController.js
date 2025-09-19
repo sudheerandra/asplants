@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Razorpay from "razorpay";
 import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 //GLOBAL VARIABLE
 const currency = "inr";
@@ -127,6 +128,10 @@ const placeOrderRazorpay = async (req, res) => {
       amount: amount * 100, // amount in paise (₹1 = 100 paise)
       currency: currency.toUpperCase(),
       receipt: newOrder._id.toString(),
+      notes: {
+        orderId: newOrder._id.toString(), // ✅ so you can fetch later from payment.notes.orderId
+        userId: userId.toString(), // (optional but helpful)
+      },
     };
 
     //CREATE RAZORPAY ORDERS
@@ -143,23 +148,47 @@ const placeOrderRazorpay = async (req, res) => {
   }
 };
 
-// VERIFY STRIPE PAYMENT
+// VERIFY RAZORPAY PAYMENT
 const verifyRazorpay = async (req, res) => {
   try {
-    const { userId, razorpay_order_id } = req.body;
+    //console.log("BODY...", req.body);
+    const {
+      userId,
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
 
-    const orderInfo = await razorpay.orders.fetch(razorpay_order_id);
-    if (orderInfo.status === "paid") {
-      //await orderModel.findByIdAndUpdate(orderInfo.receipt, { payment: true });
+    // Step 1: Verify signature
+    const generatedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
+
+    if (generatedSignature !== razorpay_signature) {
+      return res.json({
+        success: false,
+        message: "Payment verification failed!",
+      });
+    }
+
+    // Step 2: Fetch payment details
+    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    // console.log("PAYMENT...", payment);
+    if (payment.status === "captured") {
+      // Step 3: Mark order paid
       const order = await orderModel.findByIdAndUpdate(
-        orderInfo.receipt,
+        payment.notes.orderId, // Store orderId in notes when creating Razorpay order
         { payment: true },
         { new: true }
       );
 
+      //console.log("Order..", order);
+
       if (!order) {
         return res.json({ success: false, message: "Order not found!" });
       }
+
       // get user details
       const user = await userModel.findById(userId);
       const transporter = nodemailer.createTransport({
@@ -206,7 +235,7 @@ const verifyRazorpay = async (req, res) => {
 </p>
   `,
       });
-
+      // Step 5: Clear cart
       await userModel.findByIdAndUpdate(userId, { cartdata: {} });
       res.json({ success: true, message: "Payment Successful!" });
     } else {

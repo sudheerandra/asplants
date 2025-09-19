@@ -84,14 +84,25 @@ const PlaceOrder = () => {
           setLoading(false);
         }
       },
+      prefill: {
+        name: formData.firstName,
+        email: formData.email,
+        contact: formData.phone,
+      },
+      theme: {
+        color: "#2E8B57", // match AS Plants branding
+      },
     };
-    const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", () => {
-      setIsPaying(false);
-      setLoading(false);
-      toast.error("Payment failed. Please try again.");
-    });
-    rzp.open();
+    // Let React render loader before opening Razorpay
+    setTimeout(() => {
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", () => {
+        setIsPaying(false);
+        setLoading(false);
+        toast.error("Payment failed. Please try again.");
+      });
+      rzp.open();
+    }, 100); // 100ms delay is enough
   };
 
   const submitHandler = async (e) => {
@@ -169,6 +180,7 @@ const PlaceOrder = () => {
             orderData,
             { headers: { token } }
           );
+          //console.log("RResponse...", razorpayResponse)
           if (razorpayResponse.data.success) {
             // Open Razorpay popup
             initRazor(razorpayResponse.data.order);
