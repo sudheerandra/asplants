@@ -4,7 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const { backendUrl,token, setToken, navigate, setUser } = useContext(ShopContext);
+  const { backendUrl, token, setToken, navigate, setUser } =
+    useContext(ShopContext);
   const [currentState, setCurrentState] = useState("Login");
   const [fields, setFields] = useState({
     name: "",
@@ -17,13 +18,13 @@ const Login = () => {
     const { name, value } = e.target;
     setFields((prev) => ({ ...prev, [name]: value }));
   };
- 
+
   // -------------- TOKEN IS AVAILABE NAVIGATE TO HOME PAGE ------------
-  useEffect(()=>{
-    if(token){
-      navigate('/');
+  useEffect(() => {
+    if (token) {
+      navigate("/");
     }
-  },[token])
+  }, [token]);
 
   // ------------- SENDING PAYLOAD TO BACKEND APIS -----------------
   const submitHandler = async (e) => {
@@ -35,10 +36,12 @@ const Login = () => {
           backendUrl + "/api/user/register",
           fields
         );
+
         if (response.data.success) {
           //navigate("/login")
           setToken(response.data.token);
-          
+          setUser(response.data.name);
+          localStorage.setItem("user", response.data.name);
           localStorage.setItem("token", response.data.token);
           setFields({ name: "", email: "", password: "" });
           toast.success("User Registered Successfully!");
@@ -47,10 +50,13 @@ const Login = () => {
         }
       } else {
         // CALL LOGIN BACKEND API
-        const response = await axios.post(backendUrl + "/api/user/login", fields);
-     
+        const response = await axios.post(
+          backendUrl + "/api/user/login",
+          fields
+        );
+
         if (response.data.success) {
-          navigate("/")
+          navigate("/");
           setToken(response.data.token);
           setUser(response.data.name);
           localStorage.setItem("user", response.data.name);
@@ -106,7 +112,12 @@ const Login = () => {
         required
       />
       <div className="w-full flex justify-between text-sm mt-[-8px]">
-        <p onClick={()=> navigate("/forgot-password")} className="cursor-pointer">Forgot Your Password?</p>
+        <p
+          onClick={() => navigate("/forgot-password")}
+          className="cursor-pointer"
+        >
+          Forgot Your Password?
+        </p>
         {currentState === "Login" ? (
           <p
             className="cursor-pointer"

@@ -2,7 +2,8 @@ import React from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const {setToken} = props;
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
