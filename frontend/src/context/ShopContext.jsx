@@ -14,6 +14,7 @@ const ShopContextProvider = (props) => {
   const delivery_fee = 0;
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(localStorage.getItem("user") || "")
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [email, setEmail] = useState("");
@@ -267,8 +268,11 @@ const ShopContextProvider = (props) => {
     setDiscount(0);
     toast.info("Coupon removed");
   };
+ 
 
   const value = {
+    user,
+    setUser,
     products,
     currency,
     delivery_fee,

@@ -15,7 +15,7 @@ export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
   const [token, setToken] = useState("");
-   const currency = '\u20B9'
+     const currency = '\u20B9'
 
   //getting token from localstroge for after refreshed user logout issue
   useEffect(() => {
@@ -36,7 +36,7 @@ const App = () => {
         <Login setToken={setToken} />
       ) : (
         <>
-          <Navbar setToken={setToken} />
+          <Navbar setToken={setToken}/>
           <hr />
           <div className="flex w-full">
             <Sidebar />
