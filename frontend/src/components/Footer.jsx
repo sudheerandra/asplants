@@ -3,6 +3,7 @@ import { assests } from "../assets/assests";
 import { Link, useLocation } from "react-router-dom";
 import { SiThreads } from "react-icons/si";
 import { Facebook, Instagram, Twitter, Phone, Mail } from "lucide-react";
+import WhatsAppButton from "./WhatsupButton";
 
 const Footer = () => {
   const { pathname } = useLocation();
@@ -64,9 +65,13 @@ const Footer = () => {
               <Phone className="w-4 h-4 text-green-600" />
               +91 9381568173
             </li>
+            
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-green-600" />
               asplants.in@gmail.com
+            </li>
+            <li className="flex items-center gap-2">
+              <WhatsAppButton/>
             </li>
           </ul>
         </div>
