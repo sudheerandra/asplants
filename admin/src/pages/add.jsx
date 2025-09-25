@@ -13,6 +13,7 @@ const Add = (props) => {
     price: "",
     category: "Indoor",
     bestseller: false,
+    latest: false,
   });
 
   // to stroe images files
@@ -64,6 +65,12 @@ const Add = (props) => {
     }));
   };
 
+  const latestHandler = (e) => {
+    setFormState((prev) => ({
+      ...prev,
+      latest: e.target.checked,
+    }));
+  }
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -73,6 +80,7 @@ const Add = (props) => {
       formData.append("category", formState.category);
       formData.append("price", formState.price);
       formData.append("bestseller", formState.bestseller);
+      formData.append("latest", formState.latest)
 
       // Append images only if selected
       Object.entries(images).forEach(([key, file]) => {
@@ -99,8 +107,9 @@ const Add = (props) => {
           name: "",
           description: "",
           price: "",
-          category: "Men",
+          category: "Indoor",
           bestseller: false,
+          latest: false,
         });
 
         setImages({
@@ -201,27 +210,6 @@ const Add = (props) => {
         </div>
       </div>
 
-      {/* PRODUCT-SIZES */}
-      {/* <div>
-        <p className="mb-2">Product Sizes</p>
-        <div className="flex gap-2">
-          {sizeOptions.map((size) => (
-            <div key={size}>
-              <p
-                onClick={() => sizeHandler(size)}
-                className={`cursor-pointer px-3 py-1 ${
-                  formState.sizes.includes(size)
-                    ? "bg-orange-600 text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {size}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div> */}
-
       {/* BESTSELLER */}
       <div className="flex gap-2 mt-2">
         <input
@@ -232,6 +220,16 @@ const Add = (props) => {
         />
         <label className="cursor-pointer" htmlFor="bestseller">
           Add to bestseller
+        </label>
+        {/* LETEST ARRIVILS */}
+        <input
+          onChange={latestHandler}
+          type="checkbox"
+          id="latest"
+          checked={formState.latest}
+        />
+        <label className="cursor-pointer" htmlFor="bestseller">
+          Add to Latest
         </label>
       </div>
 

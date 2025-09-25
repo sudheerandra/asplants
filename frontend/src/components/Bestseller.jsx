@@ -5,7 +5,7 @@ import Title from "./Title";
 import ProductItems from "./ProductItems.jsx";
 
 const Bestseller = () => {
-  const { products} = useContext(ShopContext);
+  const { products } = useContext(ShopContext);
   const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
@@ -17,18 +17,25 @@ const Bestseller = () => {
     if (scrollTo) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    
-  }
+  };
 
   return (
     <div className="my-2">
       <div className="text-center text-3xl py-8">
         <Title text1={"BEST"} text2={"SELLERS"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-700">
-          <b>🌟 Customer favorites you’ll love too</b> <span>Discover the plants that everyone is talking about! Our bestsellers are loved by hundreds of happy plant parents for their beauty, easy care, and the positive vibes they bring.</span>
+          <b>🌟 Customer favorites you’ll love too</b>{" "}
+          <span>
+            Discover the plants that everyone is talking about! Our bestsellers
+            are loved by hundreds of happy plant parents for their beauty, easy
+            care, and the positive vibes they bring.
+          </span>
         </p>
       </div>
-      <div onClick={handleScroll} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 gap-y-7">
+      <div
+        onClick={handleScroll}
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 gap-y-7"
+      >
         {bestSeller.map((item, index) => (
           <ProductItems
             key={index}
@@ -40,7 +47,7 @@ const Bestseller = () => {
             avgRating={item.avgRating}
           />
         ))}
-             </div>
+      </div>
     </div>
   );
 };

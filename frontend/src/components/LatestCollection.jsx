@@ -9,11 +9,11 @@ const LatestCollection = () => {
   const { products} = useContext(ShopContext);
   const [latestProducts, setLatestProducts] = useState([]);
 
-  
+   useEffect(() => {
+      const newArriviels = products.filter((item) => item.latest);
+      setLatestProducts(newArriviels.slice(0, 15));
+    }, [products]);
 
-  useEffect(() => {
-    setLatestProducts(products.slice(0, 5));
-  }, [products]);
 
   const handleScroll = () => {
     if (scrollTo) {

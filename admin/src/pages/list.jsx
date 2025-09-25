@@ -55,7 +55,7 @@ const List = (props) => {
     <div>
       {/* 📱 Mobile: Card layout */}
       <div className="space-y-4 md:hidden">
-        {listProducts.map((item, index) => (
+        {[...listProducts].reverse().map((item, index) => (
           <div
             key={index}
             className="border border-orange-300 rounded-lg p-4 bg-white shadow hover:shadow-md transition"
@@ -68,6 +68,7 @@ const List = (props) => {
             <div className="text-sm text-gray-600 mt-1">
               <p><span className="font-medium">Category:</span> {item.category}</p>
               <p><span className="font-medium">Bestseller:</span> {item.bestseller ? "Yes" : "No"}</p>
+              <p><span className="font-medium">Latest:</span> {item.latest ? "Yes" : "No"}</p>
             </div>
 
             {item.image && item.image.length > 0 && (
@@ -110,7 +111,7 @@ const List = (props) => {
             </tr>
           </thead>
           <tbody>
-            {listProducts.map((item, index) => (
+            {[...listProducts].reverse().map((item, index) => (
               <tr
                 key={index}
                 className="border-b border-orange-300 hover:bg-orange-100 transition-colors duration-300"
