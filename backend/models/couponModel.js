@@ -11,6 +11,7 @@ const couponSchema = new mongoose.Schema(
     expiryDate: { type: Date, required: true },
     minCartValue: { type: Number, default: 0 },
     isActive: { type: Boolean, default: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
     usedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }

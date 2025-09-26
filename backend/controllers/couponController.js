@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Coupon from "../models/couponModel.js";
 import Product from "../models/productModel.js";
 
@@ -13,6 +14,7 @@ export const createCoupon = async (req, res) => {
       expiryDate,
       minCartValue,
       isActive,
+      userId,
     } = req.body;
 
     // 🔹 Sanitize inputs
@@ -26,6 +28,13 @@ export const createCoupon = async (req, res) => {
       minCartValue: Number(minCartValue) || 0,
       isActive: typeof isActive === "boolean" ? isActive : true,
     };
+    // 🔹 Only add userId if provided and valid
+    if (userId) {
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid userId" });
+      }
+      payload.userId = userId;
+    }
 
     // 🔹 Validate required fields manually (extra safety)
     if (
@@ -45,6 +54,7 @@ export const createCoupon = async (req, res) => {
 
     const coupon = new Coupon(payload);
     await coupon.save();
+    //console.log("BACKEND COUPON..", coupon);
 
     res.status(201).json(coupon);
   } catch (error) {
@@ -99,14 +109,24 @@ export const applyCoupon = async (req, res) => {
 
     // 🔹 Find active coupon
     const coupon = await Coupon.findOne({ code, isActive: true });
+    //console.log("STORED COUPON,,,", coupon);
+
     if (!coupon) {
       return res
         .status(404)
         .json({ success: false, message: "Invalid or inactive coupon" });
     }
 
+    // 🔒 User-specific check
+    if (coupon.userId && coupon.userId.toString() !== String(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "This coupon is not valid for your account",
+      });
+    }
+
     // 🔹 Check if user already used it
-    if (coupon.usedBy?.includes(userId)) {
+    if (coupon.usedBy?.some((u) => u.toString() === String(userId))) {
       return res
         .status(400)
         .json({ success: false, message: "Coupon already used by you!" });

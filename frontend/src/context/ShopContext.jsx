@@ -14,7 +14,8 @@ const ShopContextProvider = (props) => {
   const delivery_fee = 0;
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(localStorage.getItem("user") || "")
+  const [user, setUser] = useState(localStorage.getItem("name") || "");
+  const [userId, setUserId] = useState(localStorage.getItem("user") || "");
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [email, setEmail] = useState("");
@@ -87,6 +88,7 @@ const ShopContextProvider = (props) => {
 
   // --------------- APPLY COUPON TO FRONTEND --------------
   const applyCoupon = async (code) => {
+    //console.log("CODE...", code);
     try {
       const response = await axios.post(
         backendUrl + "/api/coupons/apply",
@@ -268,11 +270,12 @@ const ShopContextProvider = (props) => {
     setDiscount(0);
     toast.info("Coupon removed");
   };
- 
 
   const value = {
     user,
     setUser,
+    userId,
+    setUserId,
     products,
     currency,
     delivery_fee,

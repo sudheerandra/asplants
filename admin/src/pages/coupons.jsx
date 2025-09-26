@@ -26,7 +26,7 @@ const CouponsPage = () => {
 
   // ✅ Add coupon
   const handleCouponAdded = async (newCoupon) => {
-    //console.log("COUPON DATA...", newCoupon);
+    //console.log("FRONTEND COUPON DATA...", newCoupon);
 
     try {
       const { data } = await axios.post(`${backendUrl}/api/coupons`, newCoupon);
@@ -35,10 +35,12 @@ const CouponsPage = () => {
     } catch (error) {
       const msg = error.response?.data?.message || "Error adding coupon";
       if (msg.includes("exists")) {
-      toast.error("⚠️ Coupon code already exists. Please choose another one.");
-    } else {
-      toast.error(msg);
-    }
+        toast.error(
+          "⚠️ Coupon code already exists. Please choose another one."
+        );
+      } else {
+        toast.error(msg);
+      }
     }
   };
 
@@ -57,7 +59,7 @@ const CouponsPage = () => {
 
   // ✅ Toggle coupon
   const handleToggleCoupon = async (id) => {
-    try {
+      try {
       const { data } = await axios.patch(
         `${backendUrl}/api/coupons/${id}/toggle`
       );

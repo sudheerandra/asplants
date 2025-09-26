@@ -5,7 +5,7 @@ import {
   getCoupons,
   deleteCoupon,
   toggleCoupon,
-  applyCoupon
+  applyCoupon,
 } from "../controllers/couponController.js";
 import authUser from "../middleware/auth.js"
 

@@ -94,7 +94,7 @@ const Navbar = () => {
             {/* Profile Dropdown */}
             {token && profileOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg py-2 z-50">
-                <p className="px-4 py-2 cursor-pointer hover:bg-green-50">My Profile</p>
+                <p onClick={()=> navigate("/myprofile")} className="px-4 py-2 cursor-pointer hover:bg-green-50">My Profile</p>
                 <p
                   onClick={() => navigate("/orders")}
                   className="px-4 py-2 cursor-pointer hover:bg-green-50"

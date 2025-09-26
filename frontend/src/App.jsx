@@ -21,6 +21,7 @@ import Delivery from "./pages/Delivery";
 import "./index.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import ProtectedRoute from "./protectRoutes/ProtectedRoute";
+import MyProfile from "./pages/MyProfile";
 
 
 
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/myprofile" element={<MyProfile/>} />
         <Route path="/orders"  element={
             <ProtectedRoute>
               <Orders />

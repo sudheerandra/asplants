@@ -4,6 +4,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import nodemailer from "nodemailer";
+import { log } from "console";
 
 // Create Token
 const createToken = (id) => {
@@ -43,9 +44,9 @@ const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
-
+        
     const token = createToken(user._id);
-    res.json({ success: true, token, name:user.name });
+    res.json({ success: true, token, name:user.name, email:user.email, id:user._id  });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -67,7 +68,7 @@ const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       const token = createToken(user._id);
-      res.json({ success: true, token, name:user.name });
+      res.json({ success: true, token, name:user.name, email:user.email, id:user._id });
     } else {
       res.json({ success: false, message: "Invalid Credentials" });
     }

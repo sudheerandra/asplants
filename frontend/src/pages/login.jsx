@@ -4,9 +4,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const { backendUrl, token, setToken, navigate, setUser } =
+  const { backendUrl, token, setToken, navigate, setUser, setUserId } =
     useContext(ShopContext);
   const [currentState, setCurrentState] = useState("Login");
+  
   const [fields, setFields] = useState({
     name: "",
     email: "",
@@ -41,7 +42,9 @@ const Login = () => {
           //navigate("/login")
           setToken(response.data.token);
           setUser(response.data.name);
-          localStorage.setItem("user", response.data.name);
+          setUserId(response.data.id)
+          localStorage.setItem("name", response.data.name);
+          localStorage.setItem("user", response.data.id);
           localStorage.setItem("token", response.data.token);
           setFields({ name: "", email: "", password: "" });
           toast.success("User Registered Successfully!");
@@ -54,12 +57,15 @@ const Login = () => {
           backendUrl + "/api/user/login",
           fields
         );
-
+         //console.log("RESPONSE...", response.data);
+         
         if (response.data.success) {
           navigate("/");
           setToken(response.data.token);
           setUser(response.data.name);
-          localStorage.setItem("user", response.data.name);
+          setUserId(response.data.id);
+          localStorage.setItem("name", response.data.name);
+          localStorage.setItem("user", response.data.id);
           localStorage.setItem("token", response.data.token);
           setFields({ name: "", email: "", password: "" });
           //toast.success("User Logged In!");
