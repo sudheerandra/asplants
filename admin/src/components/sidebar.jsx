@@ -6,6 +6,13 @@ const Sidebar = () => {
   return (
     <div className="w-[18%] min-h-screen border-r-1">
       <div className="flex flex-col gap-4 pt-6 pl-[20%] text-[15px]">
+       <NavLink
+          className="flex items-center gap-4 border boder-gray-600 border-r-0 px-3 py-2 rounded-1"
+          to="/dashboard"
+        >
+          <img className="w-5 h-5" src={assets.add_icon} alt="" />
+          <p className="hidden md:block">Dash Board</p>
+        </NavLink>
         <NavLink
           className="flex items-center gap-4 border boder-gray-600 border-r-0 px-3 py-2 rounded-1"
           to="/add"

@@ -1,11 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { assests } from "../assets/assests";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
 
   const {
     setShowSearch,
@@ -34,6 +35,18 @@ const Navbar = () => {
     if (!token) return navigate("/login");
     setProfileOpen((prev) => !prev);
   };
+
+    // ---------- CLOSE ON CLICK OUTSIDE ----------
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="w-full bg-green-50 shadow-md sticky top-0 z-50">
@@ -76,7 +89,7 @@ const Navbar = () => {
           />
 
           {/* Profile */}
-          <div className="relative flex flex-col items-center">
+          <div ref={profileRef} className="relative flex flex-col items-center">
             <img
               onClick={toggleProfileList}
               src={assests.profile_icon}

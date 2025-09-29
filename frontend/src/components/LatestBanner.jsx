@@ -12,7 +12,7 @@ const LatestBanner = () => {
                   <p className='w-8 md:w-11 h-[2px] bg-[#414141]'></p>
                   <p className='font-medium text-5m md:text-base '>OUR BESTSELLER</p>
              </div>
-             <h1 className='prata-regular text-3xl sm:py-3 lg:text-5xl leading-relaxed'>Latest Arrivals</h1>
+             <h1 className='prata-regular text-3xl sm:py-3 lg:text-5xl leading-relaxed text-green-600'>Latest Arrivals</h1>
              <div className='flex items-center gap-2'>
                   <p className='font-semibold text-5m md:text-base'>SHOP NOW</p>
                   <p className='w-8 md:w-11 h-[2px] bg-[#414141]'></p>

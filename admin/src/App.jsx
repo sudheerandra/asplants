@@ -10,6 +10,7 @@ import Orders from "./pages/orders";
 import Add from "./pages/add";
 import CouponsPage from "./pages/coupons";
 import SearchOrders from "./components/SearchOrders";
+import Dashboard from "./pages/Dashboard";
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -42,6 +43,10 @@ const App = () => {
             <Sidebar />
             <div className="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
               <Routes>
+              <Route
+                  path="/dashboard"
+                  element={token ? <Dashboard token={token} /> : <Navigate to="/" />}
+                />
                 <Route
                   path="/add"
                   element={token ? <Add token={token} /> : <Navigate to="/" />}
