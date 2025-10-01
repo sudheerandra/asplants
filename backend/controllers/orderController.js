@@ -174,6 +174,7 @@ const verifyRazorpay = async (req, res) => {
 
     // Step 2: Fetch payment details
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    const PaymentStatus = payment.status === "captured" ? "Done" : "Pending";
     // console.log("PAYMENT...", payment);
     if (payment.status === "captured") {
       // Step 3: Mark order paid
@@ -210,6 +211,7 @@ const verifyRazorpay = async (req, res) => {
     <h2>Thank you for your order, ${user.name}!</h2>
     <p>Your payment was successful and your order is being processed.</p>
     <p><b>Order ID:</b> ${order._id}</p>
+    <p><b>Payment Status:</b> ${PaymentStatus}</p>
     <ul>
       ${order.items
         .map(

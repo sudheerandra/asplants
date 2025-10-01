@@ -63,7 +63,6 @@ const PlaceOrder = () => {
       order_id: order.id,
       receipt: order.receipt,
       handler: async (response) => {
-        //console.log("initRazor......",response);
         try {
           const { data } = await axios.post(
             backendUrl + "/api/order/verifyRazorpay",
@@ -75,10 +74,13 @@ const PlaceOrder = () => {
             navigate("/orders");
             setCartItems({});
             clearCoupon(); // ✅ reset coupon
+          } else {
+            toast.error("Payment verification failed!");
           }
         } catch (error) {
           console.log(error);
-          toast.error(error);
+          toast.error("Something went wrong during verification");
+          return;
         } finally {
           setIsPaying(false);
           setLoading(false);
@@ -93,16 +95,17 @@ const PlaceOrder = () => {
         color: "#2E8B57", // match AS Plants branding
       },
     };
-    // Let React render loader before opening Razorpay
-    setTimeout(() => {
-      const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", () => {
-        setIsPaying(false);
-        setLoading(false);
-        toast.error("Payment failed. Please try again.");
-      });
-      rzp.open();
-    }, 100); // 100ms delay is enough
+
+    // ✅ Create Razorpay object
+    const rzp = new window.Razorpay(options);
+    rzp.on("payment.failed", (response) => {
+      setIsPaying(false);
+      setLoading(false);
+      toast.error(
+        response.error.description || "Payment failed. Please try again."
+      );
+    });
+    rzp.open();
   };
 
   const submitHandler = async (e) => {
@@ -180,7 +183,6 @@ const PlaceOrder = () => {
             orderData,
             { headers: { token } }
           );
-          //console.log("RResponse...", razorpayResponse)
           if (razorpayResponse.data.success) {
             // Open Razorpay popup
             initRazor(razorpayResponse.data.order);

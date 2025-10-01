@@ -25,7 +25,7 @@ const SearchOrders = ({ token }) => {
           `${backendUrl}/api/order/search?${searchType}=${searchValue}`,
           { headers: { token } }
         );
-        setResults(res.data);
+        setResults(res.data.orders || res.data);
         setSummary(null);
         setSelectedDate(null); // reset date
       }
@@ -114,6 +114,11 @@ const SearchOrders = ({ token }) => {
                     minute: "2-digit",
                     hour12: true,
                   })}
+                </p>
+                <p>Payment: {order.payment ? "Done" : "Pending"}</p>
+                <p>
+                  <span className="font-medium">PaymentMethod:</span>{" "}
+                  {order.paymentMethod}
                 </p>
                 <p>
                   <span className="font-medium">Total:</span> ₹{order.amount}

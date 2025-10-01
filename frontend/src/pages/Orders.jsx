@@ -7,7 +7,8 @@ import Title from "../components/Title";
 const Orders = () => {
   const { backendUrl, token, currency } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
-
+  //console.log("ORDER DATA..", orderData);
+  
   const getOrdersData = async () => {
     try {
       if (!token) {
@@ -91,6 +92,7 @@ const Orders = () => {
                   Payment:{" "}
                   <span className="text-gray-400">{item.paymentMethod}</span>
                 </p>
+                <p className="text-sm text-gray-500"><span className="text-gray-400">Payment Status: {item.payment? "Done" : "Pending" }</span></p>
               </div>
             </div>
 

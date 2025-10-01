@@ -8,7 +8,7 @@ import { assets } from "../assets/assets.js";
 
 const Orders = (props) => {
   const { token, currency } = props;
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);  
 
   //---- GET ALL ORDERS FORM BACKEND API -------
   const getOrders = async () => {
